@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.peng.PengAirline.enums.BookingStatus;
-import com.peng.PengAirline.enums.PassengerType;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
