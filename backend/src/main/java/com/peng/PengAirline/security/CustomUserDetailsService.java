@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 public class CustomUserDetailsService implements UserDetailsService{
 
     //表示依赖注入了你的用户数据访问层（Repository）。
-    private final UserRepo userRepo;
+    private final UserRepo userRepo;//final 在 Java 中是 一旦被赋值，就不能被修改
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
