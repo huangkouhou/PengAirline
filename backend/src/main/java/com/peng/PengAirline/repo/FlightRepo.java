@@ -12,7 +12,7 @@ public interface FlightRepo extends JpaRepository<Flight, Long>{
 
     boolean existsByFlightNumber(String flightNumber);    
 
-    List<Flight> findByDepartureAirportIataCodeAndArrivalAirportIataCodeAndStatusAndDepartTimeBetween(
+    List<Flight> findByDepartureAirport_IataCodeAndArrivalAirport_IataCodeAndStatusAndDepartureTimeBetween(
         String departIataCode, String arrivalIataCode, FlightStatus status, LocalDateTime startOfDay, LocalDateTime endOfDay
     );
 }
