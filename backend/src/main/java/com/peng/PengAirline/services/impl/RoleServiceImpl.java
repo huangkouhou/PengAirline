@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
-@Slf4j
+@Slf4j//自动在类中为你创建一个名为 log 的日志记录器对象,直接使用 log.info(...) 来打印日志
 @RequiredArgsConstructor
 public class RoleServiceImpl implements RoleService{
 
@@ -27,10 +27,13 @@ public class RoleServiceImpl implements RoleService{
     @Override
     public Response<?> createRole(RoleDTO roleDTO){
         log.info("inside createRole()");
+
+        //接收一个 RoleDTO 对象（通常来自前端的 JSON 请求），然后使用 modelMapper 将其转换为一个 Role 实体对象，这个 Role 对象才是能被数据库理解和存储的。
         Role role = modelMapper.map(roleDTO, Role.class);
         role.setName(role.getName().toUpperCase());
         roleRepo.save(role);
 
+        //方法执行成功后，它会构建并返回一个自定义的 Response 对象。这个对象通常会被转换成 JSON 发回给前端，告诉前端操作已成功（statusCode: 200）并附带一条消息。
         return Response.builder()
                 .statusCode(HttpStatus.OK.value())
                 .message("Role Created Successfully")
@@ -51,7 +54,7 @@ public class RoleServiceImpl implements RoleService{
 
         return Response.builder()
                 .statusCode(HttpStatus.OK.value())
-                .message("Role Created Successfully")
+                .message("Role Updated Successfully")
                 .build();
     }
 
