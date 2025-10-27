@@ -68,6 +68,7 @@ public class RoleServiceImpl implements RoleService{
         return Response.<List<RoleDTO>>builder()
                 .statusCode(HttpStatus.OK.value())
                 .message(roles.isEmpty()? "No Roles Found": "Roles Retrieved Successfully")
+                .data(roles)
                 .build();   
 
     }

@@ -26,19 +26,19 @@ public class RoleController {
     private final RoleService roleService;
 
     @PostMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+//    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Response<?>> createRole(@Valid @RequestBody RoleDTO roleDTO){
         return ResponseEntity.ok(roleService.createRole(roleDTO));
     }
 
     @PutMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+//    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Response<?>> updateRole(@Valid @RequestBody RoleDTO roleDTO){
         return ResponseEntity.ok(roleService.updateRole(roleDTO));
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'PILOT')")
+//    @PreAuthorize("hasAnyAuthority('ADMIN', 'PILOT')")
     public ResponseEntity<Response<?>> getAllRoles(){
         return ResponseEntity.ok(roleService.getAllRoles());
     }
