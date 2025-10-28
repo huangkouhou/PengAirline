@@ -41,11 +41,11 @@ public class AuthServiceImpl implements AuthService{
     public Response<?> register(RegistrationRequest registrationRequest){
         log.info("Inside register()");
         if (userRepo.existsByEmail(registrationRequest.getEmail())){
-            throw new BadRequestException("Email already exist");
+            throw new BadRequestException("Email already exist");    //邮箱唯一性检查
         }
 
         List<Role> userRoles;
-
+        //解析角色列表, 如果请求里带了角色名，就去库里查；没有就给默认 CUSTOMER。
         if (registrationRequest.getRoles() != null && !registrationRequest.getRoles().isEmpty()){
             userRoles = registrationRequest.getRoles().stream()
                     .map(roleName -> roleRepo.findByName(roleName.toUpperCase())
@@ -57,21 +57,24 @@ public class AuthServiceImpl implements AuthService{
             userRoles = List.of(defaultRole);
         }
 
+        //构造并保存用户
         User userToSave = new User();
         userToSave.setName(registrationRequest.getName());
         userToSave.setEmail(registrationRequest.getEmail());
         userToSave.setPhoneNumber(registrationRequest.getPhoneNumber());
         userToSave.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
         userToSave.setRoles(userRoles);
-        userToSave.setCreateAt(LocalDateTime.now());
+        userToSave.setCreatedAt(LocalDateTime.now());
         userToSave.setUpdatedAt(LocalDateTime.now());
         userToSave.setProvider(AuthMethod.LOCAL);
         userToSave.setActive(true);
 
         User savedUser = userRepo.save(userToSave);
 
+        //发送欢迎邮件
         emailNotificationService.sendWelcomeEmail(savedUser);
 
+        //返回统一响应
         return Response.builder()
                 .statusCode(HttpStatus.OK.value())
                 .message("user registered successfully")

@@ -37,7 +37,7 @@ public class UserDTO {
 
     private boolean active;
 
-    private LocalDateTime createAt;
+    private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
 }

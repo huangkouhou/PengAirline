@@ -72,6 +72,11 @@ public class User {
 
     private LocalDateTime updatedAt;
 
+    public void setCreatedAt(LocalDateTime now) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setCreatedAt'");
+    }
+
 }
 
 // User                users_roles              Role
