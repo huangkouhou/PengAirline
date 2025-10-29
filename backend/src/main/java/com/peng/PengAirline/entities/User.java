@@ -68,14 +68,11 @@ public class User {
     private List<Booking> bookings = new ArrayList<>();
 
     @Column(updatable = false)
-    private LocalDateTime createAt;
+    private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
 
-    public void setCreatedAt(LocalDateTime now) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setCreatedAt'");
-    }
+
 
 }
 
