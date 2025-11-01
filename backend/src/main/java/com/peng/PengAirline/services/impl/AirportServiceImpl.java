@@ -24,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class AirportServiceImpl implements AirportService{
     
+    //Spring Boot在启动时，会自动将AirportRepo和ModelMapper的实例（Bean）“注入”到这个构造方法中。这就是依赖注入（Dependency Injection）。
     private final AirportRepo airportRepo;
     private final ModelMapper modelMapper;
     
@@ -33,19 +34,20 @@ public class AirportServiceImpl implements AirportService{
     public Response<?> createAirport(AirportDTO airportDTO) {
         log.info("Inside createAirport()");
 
+        // 1. 获取 DTO 中的数据
         Country country = airportDTO.getCountry();
         City city = airportDTO.getCity();
         
-        // 业务校验：城市必须属于该国家
+        // 2. 核心业务逻辑：校验  城市必须属于该国家
         if (!city.getCountry().equals(country)){
             throw new BadRequestException("City does not belong to the country");
         }
-        //  DTO -> Entity
+        // 3. DTO 转换为 实体 (Entity)
         Airport airport = modelMapper.map(airportDTO, Airport.class);
-        // 入库
+        // 4. 持久化到数据库
         airportRepo.save(airport);
 
-        // 统一响应
+        // 5. 返回标准化的成功响应
         return Response.builder()
                 .statusCode(HttpStatus.OK.value())
                 .message("Airport Created Successfully")
@@ -58,7 +60,7 @@ public class AirportServiceImpl implements AirportService{
 
         Long id = airportDTO.getId();
 
-        // 先查旧数据
+        // 从数据库中找出“旧的”机场实体
         Airport existingAirport = airportRepo.findById(id)
                 .orElseThrow(()-> new NotFoundException("Airport Not Found"));
 
@@ -89,10 +91,14 @@ public class AirportServiceImpl implements AirportService{
     @Override
     public Response<List<AirportDTO>> getAllAirports() {
 
+        // 1. 从数据库获取所有 "实体" 列表
         List<AirportDTO> airports = airportRepo.findAll().stream()
+                // 2. 使用 Java Stream API，将每个 "实体" 映射为 "DTO"
                 .map(airport -> modelMapper.map(airport, AirportDTO.class))
+                // 3. 收集成一个新的 "DTO 列表"
                 .toList();
-        
+
+        // 4. 返回包含数据列表的统一响应
         return Response.<List<AirportDTO>>builder()
                 .statusCode(HttpStatus.OK.value())
                 .message(airports.isEmpty() ? "No Airport Found": "Airport Retrieved successfully")
@@ -103,11 +109,14 @@ public class AirportServiceImpl implements AirportService{
     @Override
     public Response<AirportDTO> getAirportById(Long id) {
 
+        // 1. 查找实体，如果找不到就抛出异常
         Airport airport = airportRepo.findById(id)
                 .orElseThrow(()-> new NotFoundException("Airport Not Found"));
 
+        // 2. 将找到的 实体 映射为 DTO
         AirportDTO airportDTO = modelMapper.map(airport, AirportDTO.class);
 
+        // 3. 返回包含该 DTO 数据的统一响应
         return Response.<AirportDTO>builder()
                 .statusCode(HttpStatus.OK.value())
                 .message("Airport Retrieved successfully")

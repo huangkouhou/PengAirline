@@ -40,7 +40,7 @@ public class UserController {
         return ResponseEntity.ok(userService.getAllPilots());
     }
 
-    //获取所有飞行员
+    //获取自己的账号详细
     @GetMapping("/me")
     public ResponseEntity<Response<UserDTO>> getAccountDetails(){
         return ResponseEntity.ok(userService.getAccountDetails());
