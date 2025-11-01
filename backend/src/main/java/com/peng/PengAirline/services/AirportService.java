@@ -2,16 +2,18 @@ package com.peng.PengAirline.services;
 
 import java.util.List;
 
-import com.peng.PengAirline.dtos.AirportDTO;
+import com.peng.PengAirline.dtos.AirportCreateDTO;
+import com.peng.PengAirline.dtos.AirportUpdateDTO;
 import com.peng.PengAirline.dtos.Response;
 
 public interface AirportService {
 
-    Response<?> createAirport(AirportDTO airportDTO);
+    Response<?> createAirport(AirportCreateDTO airportCreateDTO);
 
-    Response<?> updateAirport(AirportDTO airportDTO);
+    Response<?> updateAirport(Long id, AirportUpdateDTO airportUpdateDTO);
 
-    Response<List<AirportDTO>> getAllAirports();
+    Response<List<AirportCreateDTO>> getAllAirports();
 
-    Response<AirportDTO> getAirportById(Long id);
+    Response<AirportCreateDTO> getAirportById(Long id);
+
 }
