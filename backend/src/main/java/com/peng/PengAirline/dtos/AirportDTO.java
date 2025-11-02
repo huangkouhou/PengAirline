@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AirportUpdateDTO {
+public class AirportDTO {
 
     private Long id;
 
