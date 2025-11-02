@@ -21,9 +21,9 @@ public class FlightDTO {
 
     private FlightStatus status;
 
-    private AirportCreateDTO departureAirport;
+    private AirportDTO departureAirport;
 
-    private AirportCreateDTO arrivalAirport;
+    private AirportDTO arrivalAirport;
 
     private LocalDateTime departureTime;
 

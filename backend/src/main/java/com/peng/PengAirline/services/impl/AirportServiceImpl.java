@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.peng.PengAirline.dtos.AirportCreateDTO;
-import com.peng.PengAirline.dtos.AirportUpdateDTO;
+import com.peng.PengAirline.dtos.AirportDTO;
 import com.peng.PengAirline.dtos.Response;
 import com.peng.PengAirline.entities.Airport;
 import com.peng.PengAirline.enums.City;
@@ -57,29 +57,29 @@ public class AirportServiceImpl implements AirportService{
     }
 
 @Override
-public Response<?> updateAirport(Long id, AirportUpdateDTO airportUpdateDTO) {
+public Response<?> updateAirport(Long id, AirportDTO airportDTO) {
     // 从数据库中找出“旧的”机场实体
     Airport existingAirport = airportRepo.findById(id)
             .orElseThrow(() -> new NotFoundException("Airport Not Found"));
 
     // 逐字段“选择性更新”
-    if (airportUpdateDTO.getCity() != null) {
-        if (!airportUpdateDTO.getCity().getCountry().equals(existingAirport.getCountry())) {
+    if (airportDTO.getCity() != null) {
+        if (!airportDTO.getCity().getCountry().equals(existingAirport.getCountry())) {
             throw new BadRequestException("City does not belong to the country");
         }
-        existingAirport.setCity(airportUpdateDTO.getCity());
+        existingAirport.setCity(airportDTO.getCity());
     }
 
-    if (airportUpdateDTO.getName() != null) {
-        existingAirport.setName(airportUpdateDTO.getName());
+    if (airportDTO.getName() != null) {
+        existingAirport.setName(airportDTO.getName());
     }
 
-    if (airportUpdateDTO.getIataCode() != null) {
-        existingAirport.setIataCode(airportUpdateDTO.getIataCode());
+    if (airportDTO.getIataCode() != null) {
+        existingAirport.setIataCode(airportDTO.getIataCode());
     }
 
-    if (airportUpdateDTO.getCountry() != null) {
-        existingAirport.setCountry(airportUpdateDTO.getCountry());
+    if (airportDTO.getCountry() != null) {
+        existingAirport.setCountry(airportDTO.getCountry());
     }
 
     airportRepo.save(existingAirport);
@@ -92,17 +92,17 @@ public Response<?> updateAirport(Long id, AirportUpdateDTO airportUpdateDTO) {
 
 
     @Override
-    public Response<List<AirportCreateDTO>> getAllAirports() {
+    public Response<List<AirportDTO>> getAllAirports() {
 
         // 1. 从数据库获取所有 "实体" 列表
-        List<AirportCreateDTO> airports = airportRepo.findAll().stream()
+        List<AirportDTO> airports = airportRepo.findAll().stream()
                 // 2. 使用 Java Stream API，将每个 "实体" 映射为 "DTO"
-                .map(airport -> modelMapper.map(airport, AirportCreateDTO.class))
+                .map(airport -> modelMapper.map(airport, AirportDTO.class))
                 // 3. 收集成一个新的 "DTO 列表"
                 .toList();
 
         // 4. 返回包含数据列表的统一响应
-        return Response.<List<AirportCreateDTO>>builder()
+        return Response.<List<AirportDTO>>builder()
                 .statusCode(HttpStatus.OK.value())
                 .message(airports.isEmpty() ? "No Airport Found": "Airport Retrieved successfully")
                 .data(airports)
@@ -110,20 +110,20 @@ public Response<?> updateAirport(Long id, AirportUpdateDTO airportUpdateDTO) {
     }
 
     @Override
-    public Response<AirportCreateDTO> getAirportById(Long id) {
+    public Response<AirportDTO> getAirportById(Long id) {
 
         // 1. 查找实体，如果找不到就抛出异常
         Airport airport = airportRepo.findById(id)
                 .orElseThrow(()-> new NotFoundException("Airport Not Found"));
 
         // 2. 将找到的 实体 映射为 DTO
-        AirportCreateDTO airportCreateDTO = modelMapper.map(airport, AirportCreateDTO.class);
+        AirportDTO airportDTO = modelMapper.map(airport, AirportDTO.class);
 
         // 3. 返回包含该 DTO 数据的统一响应
-        return Response.<AirportCreateDTO>builder()
+        return Response.<AirportDTO>builder()
                 .statusCode(HttpStatus.OK.value())
                 .message("Airport Retrieved successfully")
-                .data(airportCreateDTO)
+                .data(airportDTO)
                 .build();
     }
 
