@@ -58,6 +58,7 @@ public class AirportServiceImpl implements AirportService{
 
 @Override
 public Response<?> updateAirport(Long id, AirportDTO airportDTO) {
+    Long id = airportDTO.getId();
     // 从数据库中找出“旧的”机场实体
     Airport existingAirport = airportRepo.findById(id)
             .orElseThrow(() -> new NotFoundException("Airport Not Found"));

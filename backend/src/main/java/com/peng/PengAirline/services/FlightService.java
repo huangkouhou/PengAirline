@@ -14,7 +14,7 @@ public interface FlightService {
 
     Response<?> createFlight(CreateFlightRequest CreateFlightRequest);
     Response<FlightDTO> getFlightById(Long Id);
-    Response<List<FlightDTO>> getAllFlight();
+    Response<List<FlightDTO>> getAllFlights();
     Response<?> updateFlight(CreateFlightRequest createFlightRequest);
     Response<List<FlightDTO>> searchFlight(String departureIata, String arrivalPortIata, FlightStatus status, LocalDate departureDate);
     Response<List<City>> getAllCities();
