@@ -91,7 +91,7 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     public Response<FlightDTO> getFlightById(Long id) {
-        Flight flight = flightRepo.findById(id)
+        Flight flight = flightRepo.findByIdWithDetails(id)
                 .orElseThrow(() -> new NotFoundException("Flight Not Found"));
 
         FlightDTO flightDTO = modelMapper.map(flight, FlightDTO.class);
