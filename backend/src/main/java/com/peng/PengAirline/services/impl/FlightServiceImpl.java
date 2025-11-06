@@ -63,12 +63,15 @@ public class FlightServiceImpl implements FlightService {
         flightToSave.setFlightNumber(createFlightRequest.getFlightNumber());
         flightToSave.setDepartureAirport(departureAirport);
         flightToSave.setArrivalAirport(arrivalAirport);
+        flightToSave.setDepartureTime(createFlightRequest.getDepartureTime());
+        flightToSave.setArrivalTime(createFlightRequest.getArrivalTime());
         flightToSave.setBasePrice(createFlightRequest.getBasePrice());
         flightToSave.setStatus(FlightStatus.SCHEDULED);
 
         //分配机长（飞行员）
-        if (createFlightRequest.getId() != null) {
-            User pilot = userRepo.findById(createFlightRequest.getId())
+        if (createFlightRequest.getPilotId() != null) {
+            
+            User pilot = userRepo.findById(createFlightRequest.getPilotId())
                     .orElseThrow(() -> new NotFoundException("Pilot is not found"));
 
             boolean isPilot = pilot.getRoles().stream()
