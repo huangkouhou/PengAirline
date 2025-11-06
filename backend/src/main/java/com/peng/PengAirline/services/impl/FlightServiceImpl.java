@@ -99,8 +99,7 @@ public class FlightServiceImpl implements FlightService {
 
         FlightDTO flightDTO = modelMapper.map(flight, FlightDTO.class);
 
-        //断开循环引用  手动把每个 BookingDTO 里的 flight 属性设为 null，这样 Jackson 在序列化时不会再陷入死循环。
-        if (flightDTO.getBookings() != null) {
+        if (flightDTO.getBookings() != null){
             flightDTO.getBookings().forEach(bookingDTO -> bookingDTO.setFlight(null));
         }
 
@@ -110,6 +109,27 @@ public class FlightServiceImpl implements FlightService {
                 .data(flightDTO)
                 .build();
     }
+
+    // // ✅ 跳过 bookings 的自动映射
+    // modelMapper.typeMap(Flight.class, FlightDTO.class)
+    //         .addMappings(mapper -> mapper.skip(FlightDTO::setBookings));
+
+    // FlightDTO flightDTO = modelMapper.map(flight, FlightDTO.class);
+
+    // // ✅ 手动映射 bookings
+    // if (flight.getBookings() != null) {
+    //     flightDTO.setBookings(
+    //         flight.getBookings().stream()
+    //             .map(booking -> {
+    //                 BookingDTO bookingDTO = modelMapper.map(booking, BookingDTO.class);
+    //                 bookingDTO.setFlight(null);
+    //                 return bookingDTO;
+    //             })
+    //             .toList()
+    //     );
+    // }
+
+
 
     @Override
     public Response<List<FlightDTO>> getAllFlights() {
