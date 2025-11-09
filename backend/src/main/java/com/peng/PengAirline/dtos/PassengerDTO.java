@@ -20,6 +20,8 @@ public class PassengerDTO {
 
     @NotBlank(message = "Last Name cannot be blank")
     private String lastName;
+
+    @NotBlank(message = "passportNumber cannot be blank")
     private String passportNumber;
 
     @NotNull(message = "Passenger Type cannot be blank")

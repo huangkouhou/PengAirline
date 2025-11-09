@@ -2,6 +2,7 @@ package com.peng.PengAirline.dtos;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -19,6 +20,7 @@ public class CreateBookingRequest {
     private Long flightId;
 
     @NotEmpty(message = "At least one passenger must be provided")
+    @Valid   // ✅ 让 Spring 校验每一个 PassengerDTO 对象
     private List<PassengerDTO> passengers;
     
 }
