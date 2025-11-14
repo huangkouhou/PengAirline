@@ -60,4 +60,157 @@ export default class ApiService {
         }
     }
 
+
+
+    // Register user
+    static async registerUser(body){
+        const resp = await axios.post(`${this.BASE_URL}/auth/Register`, body);
+        return resp.data;
+    }
+
+    static async loginUser(body){
+        const resp = await axios.post(`${this.BASE_URL}/auth/login`, body);
+        return resp.data;
+    }
+
+
+    /* Users profile management session */
+    static async getAccountDetails(){
+        const resp = await axios.get(`${this.BASE_URL}/users/me`, {
+            headers: this.getHeader()
+        });
+        return resp.data;
+    }
+
+    static async updateMyAccount(body){
+        const resp = await axios.get(`${this.BASE_URL}/users`, body, {
+            headers: this.getHeader()
+        });
+        return resp.data;
+    }
+
+    static async getAllPilots(){
+        const resp = await axios.get(`${this.BASE_URL}/users/pilots`, {
+            headers: this.getHeader()
+        });
+        return resp.data;
+    }
+
+
+
+
+    /* Airport API methods */
+    static async createAirport(body){
+        const resp = await axios.post(`${this.BASE_URL}/airports`, body, {
+            headers: this.getHeader()
+        });
+        return resp.data;
+    }
+
+    static async updateAirport(body){
+        const resp = await axios.put(`${this.BASE_URL}/airports`, body, {
+            headers: this.getHeader()
+        });
+        return resp.data;
+    }
+    
+    static async getAllAirports(){
+        const resp = await axios.get(`${this.BASE_URL}/airports`);
+        return resp.data;
+    }
+
+    static async getAirportById(id){
+        const resp = await axios.get(`${this.BASE_URL}/${id}`);
+        return resp.data;
+    }
+
+
+
+
+
+    /* Booking API methods  */
+    static async createBooking(body){
+        const resp = await axios.post(`${this.BASE_URL}/bookings`, body, {
+            headers: this.getHeader()
+        });
+        return resp.data;
+    }
+
+    static async getBookingById(id){
+        const resp = await axios.get(`${this.BASE_URL}/bookings/${id}`, {
+            headers: this.getHeader()//你要查询 booking，必须证明你是谁
+        });
+        return resp.data;
+    }
+
+    static async getAllBookings(){
+        const resp = await axios.get(`${this.BASE_URL}/bookings`, {
+            headers: this.getHeader()
+        });
+        return resp.data;
+    }
+
+    static async getCurrentUserBookings(){
+        const resp = await axios.get(`${this.BASE_URL}/bookings/me`, {
+            headers: this.getHeader()
+        });
+        return resp.data;
+    }
+
+    static async updateBookingStatus(id, status){
+        const resp = await axios.put(`${this.BASE_URL}/bookings/${id}`, status, {
+            headers: this.getHeader()
+        });
+        return resp.data;
+    }
+
+
+
+
+    /* Flight API Methods */
+    static async createFlight(body){
+        const resp = await axios.post(`${this.BASE_URL}/flights`, body, {
+            headers: this.getHeader()
+        });
+        return resp.data;
+    }
+
+    static async getFlightById(id){
+        const resp = await axios.get(`${this.BASE_URL}/flights/${id}`);
+        return resp.data;
+    }
+
+    static async getAllFlights(){
+        const resp = await axios.get(`${this.BASE_URL}/flights`);
+        return resp.data;
+    }
+
+    static async updateFlight(body){
+        const resp = await axios.put(`${this.BASE_URL}/flights`, body, {
+            headers: this.getHeader()
+        });
+        return resp.data;
+    }
+
+    static async searchFlights(departureIataCode, arrivalIataCode, departureDate){
+
+        const params = {
+            departureIataCode: departureIataCode,
+            arrivalIataCode: arrivalIataCode,
+            departureDate: departureDate
+        };
+
+        const resp = await axios.get(`${this.BASE_URL}/flights/search`, {
+            params: params
+        });
+        return resp.data;
+    }
+
+    static async getAllCities(){
+        const resp = await axios.get(`${this.BASE_URL}/flights/countries`);
+        return resp.data;
+    }
+
+
+
 }
