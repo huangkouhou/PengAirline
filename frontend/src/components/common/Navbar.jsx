@@ -22,6 +22,13 @@ const Navbar = () => {
         <nav className="nb">
             <div className="nb-container">
                 <div className="nb-brand">
+                    <Link>
+                        <span className="logo-airline">Peng</span>
+                        <span className="logo-text">Airline</span>
+                    </Link>
+                </div>
+
+                <div className="nb-links">
                     <Link to="/home" className="nav-link">Home</Link>
                     <Link to="/flights" className="nav-link">Find Flights</Link>  
 
