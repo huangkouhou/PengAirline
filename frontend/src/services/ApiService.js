@@ -64,7 +64,7 @@ export default class ApiService {
 
     // Register user
     static async registerUser(body){
-        const resp = await axios.post(`${this.BASE_URL}/auth/Register`, body);
+        const resp = await axios.post(`${this.BASE_URL}/auth/register`, body);
         return resp.data;
     }
 
