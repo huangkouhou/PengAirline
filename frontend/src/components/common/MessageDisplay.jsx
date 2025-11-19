@@ -26,7 +26,7 @@ const MessageDisplay = ({ message, type = 'error', onDismiss }) => {
 
     const isError = type === 'error';
     const displayClass = isError ? 'error-display': 'success-display';
-    const messageClass = isError ? 'error-display': 'success-message';
+    const messageClass = isError ? 'error-message': 'success-message';
     const progressClass = isError ? 'error-progress': 'success-progress';
 
     return (
@@ -41,7 +41,7 @@ const MessageDisplay = ({ message, type = 'error', onDismiss }) => {
     );
 
    }
-   
+
     export const useMessage = () => {
         //State to hold the current messages 
         const [errorMessage, setErrorMessage] = useState(null);
