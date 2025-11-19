@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import '../../index.css';
 
 /**
  * A component that displays messages (error/success) with auto-dismiss functionality
@@ -31,7 +32,7 @@ const MessageDisplay = ({ message, type = 'error', onDismiss }) => {
 
     return (
         <div className={`message-display ${displayClass}`}>
-            <div>
+            <div class="message-content">
                 {/* Display the message */}
                 <span className={`message-text ${messageClass}`}>{message}</span>
                 {/* Visual progress indicator (for auto-dismiss)*/}
