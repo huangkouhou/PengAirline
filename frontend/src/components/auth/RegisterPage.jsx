@@ -57,7 +57,95 @@ const registerPage = () => {
     };
 
     return (
-        <></>
+        <div className="auth-page">
+            <div className="auth-card">
+                <ErrorDisplay/>
+                <SuccessDisplay/>
+
+                <div className="auth-header">
+                    <h2>Create Your Account</h2>
+                    <p>Join Peng Airlines for seamless travel experiences</p>
+                </div>
+
+                <form className="auth-form" onSubmit={handleSubmit}>
+
+                    <div className="form-group">
+                        <label htmlFor="">Full Name</label>
+                        <input
+                            type="text"
+                            name="name"
+                            id="name"
+                            value={formData.name}
+                            onChange={handleChange}
+                            required
+                            placeholder="Enter your name ..."
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="">Email Address</label>
+                        <input
+                            type="email"
+                            name="email"
+                            id="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            required
+                            placeholder="Enter your email ..."
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="">Phone Number</label>
+                        <input
+                            type="tel"
+                            name="phoneNumber"
+                            id="phoneNumber"
+                            value={formData.phoneNumber}
+                            onChange={handleChange}
+                            required
+                            placeholder="Enter your phone number ..."
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="">Password</label>
+                        <input
+                            type="password"
+                            name="password"
+                            id="password"
+                            value={formData.password}
+                            onChange={handleChange}
+                            required
+                            placeholder="Enter your phone password ..."
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="">Confirm Password</label>
+                        <input
+                            type="password"
+                            name="comfirmPassword"
+                            id="comfirmPassword"
+                            value={formData.confirmPassword}
+                            onChange={handleChange}
+                            required
+                            placeholder="Enter your phone number again ..."
+                        />
+                    </div>
+
+                    <button type="submit" className="auth-button">
+                        Create Account
+                    </button>
+
+                    <div className="auth-footer">
+                        <p>Already have an account? <Link to="/login"> Sign in here </Link></p>
+                    </div>
+
+                    
+                </form>
+            </div>
+        </div>
     );
 
 
