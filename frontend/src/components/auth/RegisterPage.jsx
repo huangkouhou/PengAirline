@@ -3,7 +3,7 @@ import { useMessage } from "../common/MessageDisplay";
 import { useState } from "react";
 import ApiService from "../../services/ApiService";
 
-const registerPage = () => {
+const RegisterPage = () => {
 
     const { ErrorDisplay, SuccessDisplay, showError, showSuccess } = useMessage();
     const navigate = useNavigate();
@@ -30,7 +30,7 @@ const registerPage = () => {
             return;
         }
 
-        if (formData.name !== formData.confirmPassword){
+        if (formData.password !== formData.confirmPassword){
             showError("Password do not match")
             return;
         }
@@ -50,7 +50,7 @@ const registerPage = () => {
             } else {
                 showError(response.message);
             }
-        } catch (error){
+        } catch (error){//优先显示后端返回的 message，其次显示 JS 系统错误。
             showError(error.response?.data?.message || error.message);
         }
 
@@ -125,8 +125,8 @@ const registerPage = () => {
                         <label htmlFor="">Confirm Password</label>
                         <input
                             type="password"
-                            name="comfirmPassword"
-                            id="comfirmPassword"
+                            name="confirmPassword"
+                            id="confirmPassword"
                             value={formData.confirmPassword}
                             onChange={handleChange}
                             required
@@ -155,4 +155,4 @@ const registerPage = () => {
 
 }
 
-export default registerPage;
+export default RegisterPage;
