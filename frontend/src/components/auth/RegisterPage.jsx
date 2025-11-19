@@ -25,7 +25,7 @@ const registerPage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!formData.name || !formData.email || !formData.password || !formData.phoneNumber | !formData.confirmPassword){
+        if (!formData.name || !formData.email || !formData.password || !formData.phoneNumber || !formData.confirmPassword){
             showError("All fields are required")
             return;
         }
@@ -142,7 +142,7 @@ const registerPage = () => {
                         <p>Already have an account? <Link to="/login"> Sign in here </Link></p>
                     </div>
 
-                    
+
                 </form>
             </div>
         </div>
