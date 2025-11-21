@@ -61,7 +61,59 @@ const HomePage = () => {
     };
 
 
+    return (
+        <div classname="home-page">
+            <div className="hero-section">
+                <div className="hero-content">
+                    <h1>Book Your Flight with Peng Airlines</h1>
+                    <p>Find the best deals for your journey</p>
+                </div>
 
+                <div className="hero-box">
+                    <ErrorDisplay />
+                    <SuccessDisplay />
+                    <form onSubmit={handleSearch}>
+                        <div className="search-fields">
+                            <div className="form-group">
+                                <label>Form</label>
+                                <select
+                                    value={searchData.departureIataCode}
+                                    onchange={(e) => setSearchData({
+                                        ...searchData,
+                                        departureIataCode: e.target.value
+                                    })}
+                                    required
+                                >
+                                    <option value="">Select Departure Airport</option>
+                                    {airports.map(airport => (
+                                        <option key={`dep-${airport.iataCode}`} value={airport.iataCode}>
+                                            {formatAirportOption(airport)}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+
+                        </div>
+
+                        <div className="swap-cities">
+                            <button
+                                type="button"
+                                onClick={handleSwapAirports}
+                                aria-label="Swap departure and arrival"
+                            >
+                                ↔
+                            </button>
+                        </div>
+
+
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+
+    );
 
 
 
