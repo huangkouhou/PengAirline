@@ -105,16 +105,68 @@ const HomePage = () => {
                             </button>
                         </div>
 
+                        <div className="form-group">
+                            <label>To</label>
+                            <select
+                                value={searchData.arrivalIataCode}
+                                onChange={(e) => setSearchData({
+                                    ...searchData,
+                                    arrivalIataCode: e.target.value
+                                })}
+                                required
+                            >
+                                <option value="">Select Arrival Airport</option>
 
+                                {airports
+                                    .filter(airport => airport.iataCode !== searchData.departureIataCode)
+                                    .map(airport => (
+                                        <option key={`arr-${airport.iataCode}`} value={airport.iataCode}>
+                                            {formatAirportOption(airport)}
+                                        </option>
+                                    ))}
+                            </select>
+                        </div>
+
+                        <div className="form=group">
+                            <label>Departure Date</label>
+                            <input
+                                required
+                                type="date"
+                                value={searchData.departDate}
+                                onChange={(e) => setSearchData({
+                                    ...searchData,
+                                    departureDate: e.target.value
+                                })}
+                                min={new Date().toISOString().split('T')[0]}
+                            />
+                        </div>
+
+                        <button type="submit" className="search-button">
+                            Search Flights
+                        </button>
                     </form>
-
                 </div>
-
             </div>
+            
+
+            {/* Other sections like popular destinations, etc. can be added here */}
+            {/* Popular Destinations */}
+
+
+
+
+            {/* why Choose Us*/}
+
+
+
+
+            {/* Testimonials */}
+
+
         </div>
 
     );
 
+};
 
-
-}
+export default HomePage;
