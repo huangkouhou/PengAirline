@@ -5,7 +5,7 @@ import { useMessage } from "../common/MessageDisplay";
 
 const HomePage = () => {
 
-    const { ErrorDisplay, SuccessDisplay, showError } = useNavigate();
+    const { ErrorDisplay, SuccessDisplay, showError } = useMessage();
     const navigate = useNavigate();
     const [airports, setAirports] = useState([]);
 
@@ -62,7 +62,7 @@ const HomePage = () => {
 
 
     return (
-        <div classname="home-page">
+        <div className="home-page">
             <div className="hero-section">
                 <div className="hero-content">
                     <h1>Book Your Flight with Peng Airlines</h1>
@@ -78,9 +78,9 @@ const HomePage = () => {
                                 <label>Form</label>
                                 <select
                                     value={searchData.departureIataCode}
-                                    onchange={(e) => setSearchData({
+                                    onChange={(e) => setSearchData({
                                         ...searchData,
-                                        departureIataCode: e.target.value
+                                        departureDate: e.target.value
                                     })}
                                     required
                                 >
@@ -93,7 +93,7 @@ const HomePage = () => {
                                 </select>
                             </div>
 
-                        </div>
+                        
 
                         <div className="swap-cities">
                             <button
@@ -140,6 +140,7 @@ const HomePage = () => {
                                 min={new Date().toISOString().split('T')[0]}
                             />
                         </div>
+                    </div>
 
                         <button type="submit" className="search-button">
                             Search Flights
