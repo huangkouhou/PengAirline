@@ -151,18 +151,103 @@ const HomePage = () => {
 
             {/* Other sections like popular destinations, etc. can be added here */}
             {/* Popular Destinations */}
+            <section className="popular-destinations">
+                <h2>Popular Destinations</h2>
+                <p>Explore our most booked flight routes</p>
 
-
+                <div className="destinations-grid">
+                    {popularDestinations.map(destination => (
+                        <div key={destination.id} className="destination-card">
+                            <div className="destination-image" style={{ backgroundImage: `url(/images/${destination.image})`}}>
+                                <div className="destination-overlay">
+                                    <h3>{destination.city}</h3>
+                                    <p>{destination.country}</p>
+                                </div>
+                            </div>
+                            <div className="destination-footer">
+                                <span>Form {destination.price}</span>
+                                <Link to="/flights" className="book-button">Book Now</Link>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </section>
 
 
             {/* why Choose Us*/}
+            <section className="features-section">
+                <h2>Why Choose Peng Airline</h2>
+                <div className="features-grid">
+                    <div className="feature-card">
+                        <div className="feature-icon">✈️</div>
+                        <h3>Modern Fleet</h3>
+                        <p>Fly in comfort with our state-of-the-art aircraft featuring the latest amenities.</p>
+                    </div>
+
+                    <div className="feature-card">
+                        <div className="feature-icon">🕒</div>
+                        <h3>On-Time Performance</h3>
+                        <p>We pride ourselves on our industry-leading punctuality record.</p>
+                    </div>
+
+                    <div className="feature-card">
+                        <div className="feature-icon">🍽️</div>
+                        <h3>Gourmet Dining</h3>
+                        <p>Enjoy chef-curated meals inspired by global cuisines.</p>
+                    </div>
+
+                    <div className="feature-card">
+                        <div className="feature-icon">💺</div>
+                        <h3>Extra Legroom</h3>
+                        <p>More space to relax with our generous seat pitch in all classes.</p>
+                    </div>
+
+                </div>
+            </section>
 
 
+            
+            {/* Special Offers */}
+            <section className="offers-section">
+                <h2>Special Offers</h2>
+                <p>Don't miss these exclusive deals</p>
+
+                <div className="offer-card">
+                    <div className="offer-content">
+                        <h3>Summer Sale - Up to 30% Off!</h3>
+                        <p>Book by June 30 for travel between July and September.</p>
+                        <Link to="/flights" className="offer-button">View Deals</Link>
+                    </div>
+                </div>
+            </section>
 
 
             {/* Testimonials */}
+            <section className="Testimonials-section">
+                <h2>What Our Passengers Say</h2>
 
+                <div className="testimonials-grid">
+                    <div className="testimonial-card">
+                        <div className="testimonial-text">
+                            "The service was exceptional from booking to landing. Will definitely fly with Peng Airline again!"
+                        </div>
+                        <div className="testimonial-author">
+                            <div className="author-name">Sarah Johnson</div>
+                            <div className="author-details">Frequent Flyer</div>
+                        </div>
+                    </div>
 
+                    <div className="testimonial-card">
+                        <div className="testimonial-text">
+                            "Most comfortable economy seats I've experienced. The crew made the long flight enjoyable."
+                        </div>
+                        <div className="testimonial-author">
+                            <div className="author-name">Michael Chen</div>
+                            <div className="author-details">Business Traveler</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
 
     );
