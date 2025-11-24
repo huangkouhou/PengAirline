@@ -12,7 +12,7 @@ const HomePage = () => {
     const [searchData, setSearchData] = useState({
         departureIataCode: "",
         arrivalIataCode: "",
-        departDate: ""
+        departureDate: ""
     });
 
     const popularDestinations = [
@@ -33,7 +33,7 @@ const HomePage = () => {
             }
         };
         fetchAirports();//最后立即调用它
-    },[])//[] 代表只在组件第一次渲染时执行一次
+    },[showError]);
 
 
     const handleSearch = async(e) => {
@@ -80,7 +80,7 @@ const HomePage = () => {
                                     value={searchData.departureIataCode}
                                     onChange={(e) => setSearchData({
                                         ...searchData,
-                                        departureDate: e.target.value
+                                        departureIataCode: e.target.value
                                     })}
                                     required
                                 >
@@ -118,7 +118,12 @@ const HomePage = () => {
                                 <option value="">Select Arrival Airport</option>
 
                                 {airports
-                                    .filter(airport => airport.iataCode !== searchData.departureIataCode)
+                                    //防止机场数据未加载完导致报错+避免渲染 “undefined(undefined)-undefined” 这种奇怪的文本
+                                    .filter(airport => 
+                                        airport &&
+                                        airport.iataCode && 
+                                        airport.iataCode !== searchData.departureIataCode
+                                    )
                                     .map(airport => (
                                         <option key={`arr-${airport.iataCode}`} value={airport.iataCode}>
                                             {formatAirportOption(airport)}
@@ -127,12 +132,12 @@ const HomePage = () => {
                             </select>
                         </div>
 
-                        <div className="form=group">
+                        <div className="form-group">
                             <label>Departure Date</label>
                             <input
                                 required
                                 type="date"
-                                value={searchData.departDate}
+                                value={searchData.departureDate}
                                 onChange={(e) => setSearchData({
                                     ...searchData,
                                     departureDate: e.target.value
