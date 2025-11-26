@@ -105,7 +105,7 @@
 
         //把时间字符串转成“小时:分钟 AM/PM”
         const formatAirportOption = (airport) => {
-            return `${airport.iataCode} (${airport.city}) - $(airport.name)`;
+            return `${airport.iataCode} (${airport.city}) - ${airport.name}`;
         };
 
         const formatTime = (dateTime) => {
