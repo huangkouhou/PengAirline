@@ -129,4 +129,56 @@ const FindFlightsPage = () => {
 
     return `${hours}h ${minutes}m`;
   };
+
+
+
+
+  return(
+    <div className="find-flight-page">
+        <div className="container">
+            <ErrorDisplay/>
+            <SuccessDisplay/>
+
+        </div>
+
+        <div className="search-section">
+            <h2>Find Your Flight</h2>
+            <form onSubmit={handleSearch} className="search-form">
+                <div className="search-row">
+                    <div className="form-group">
+                        <label>From</label>
+                        <select
+                            value={searchParams.departureIataCode}
+                            onChange={(e) => setSearchParams({
+                                ...searchParams,
+                                departureIataCode: e.target.value
+                            })}
+                            required
+                        >
+                            <option value="">Select Departure Airport</option>
+                            {airports.map(airport => (
+                                <option key={`dep-${airport.iataCode}`} value={airport.iataCode}>
+                                    {formatAirportOption(airport)}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+
+        <div className="result-section">
+
+        </div>
+
+    </div>
+
+
+  );
+
+
+
 };
+
+export default FindFlightsPage;
