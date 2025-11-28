@@ -163,6 +163,56 @@ const FindFlightsPage = () => {
                             ))}
                         </select>
                     </div>
+
+                    <div className="swap-cities">
+                        <button
+                            type="button"
+                            onClick={handleSwapAirports}
+                            aria-label="Swap departure and arrival airport"
+                        >
+                            ↔
+                        </button>
+                    </div>
+
+                    <div className="form-group">
+                        <label>To</label>
+                        <select
+                            value={searchParams.arrivalIataCode}
+                            onChange={(e) => setSearchParams({
+                                ...searchParams,
+                                arrivalIataCode: e.target.value
+                            })}
+                            required
+                        >
+                            <option value="">Select Arrival Airport</option>
+                            {airports
+                                .filter(airport => airport.iataCode !== searchParams.departureIataCode)
+                                .map(airport => (
+                                    <option key={`arr-${airport.iataCode}`} value={airport.iataCode}>
+                                        {formatAirportOption(airport)}
+                                    </option>
+                                ))}
+                        </select>
+                    </div>
+
+                    <div className="form-group">
+                        <label>Departure Date</label>
+                        <input
+                        required
+                        type="date"
+                        value={searchParams.departureDate}
+                        onChange={(e) => setSearchParams({
+                            ...searchParams,
+                            departureDate: e.target.value
+                        })}
+                        min={new Date().toISOString().split('T')[0]}
+                        />
+                    </div>
+
+                    <button type="submit" className="ff-button">
+                        Search Flights
+                    </button>
+
                 </div>
             </form>
         </div>
