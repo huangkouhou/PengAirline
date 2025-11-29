@@ -218,8 +218,76 @@ const FindFlightsPage = () => {
         </div>
 
 
-        <div className="result-section">
+        <div className="results-section">
+            {loading ? (
+                <div className="loading">Loading flights...</div>
+            ) : flights.length > 0 ? (
+              <div className="flights-list">
+                {flights.map(flight => (
+                  <div key={flight.id} className="flight-card">
 
+                    <div className="flight-header">
+                      <div className="flight-number">
+                        {flight.flightNumber}
+                      </div>
+                      <div className={`flight-status ${flight.status.toLowerCase()}`}>
+                        {flight.status}
+                      </div>
+                    </div>
+
+                    <div className="flight-details">
+                      <div className="departure">
+                        <div className="time">{formatTime(flight.departureTime)}</div>
+                        <div className="date">{formatDate(flight.departureTime)}</div>
+                        <div className="airport">
+                            {flight.departureAirport.iataCode} - {flight.departureAirport.name}
+                        </div>
+                      </div>
+
+                      <div className="duration">
+                        <div className="line"></div>
+                        <div className="duration-text">
+                          {calculateDuration(flight.departureTime, flight.arrivalTime)}
+                        </div>
+                        <div className="line"></div>
+                      </div>
+
+                      <div className="arrival">
+                        <div className="time">{formatTime(flight.arrivalTime)}</div>
+                        <div className="date">{formatDate(flight.arrivalTime)}</div>
+                        <div className="airport">
+                          {flight.arrivalAirport.iataCode} - {flight.arrivalAirport.name}
+                        </div>
+                      </div>
+
+                      <div className="price">
+                        ${flight.basePrice.toFixed(2)}
+                      </div>
+                    </div>
+                   
+
+                    <div className="flight-actions">
+                      <Link
+                        to={`/book-flight/${flight.id}`}
+                        state={{ flight }}
+                        className="book-button"
+                      >
+                        Book Now
+                      </Link>
+
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="no-flights">
+                  {searchParams.departureIataCode || searchParams.arrivalIataCode ? (
+                      <p>No flights found matching your criteria</p>
+                  ) : (
+                      <p>Enter departure and arrival cities to search for flights</p>
+                  )}
+              </div>
+            )}
         </div>
 
     </div>

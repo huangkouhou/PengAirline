@@ -4,6 +4,7 @@ import Footer from "./components/common/Footer";
 import RegisterPage from "./components/auth/RegisterPage";
 import LoginPage from "./components/auth/LoginPage";
 import HomePage from "./components/pages/HomePage";
+import FindFlightsPage from "./components/pages/FindFlightsPage";
 
 function App(){
 
@@ -19,6 +20,7 @@ function App(){
 
           {/* PUBLIC PAGES */}
           <Route path="/home" element={<HomePage />} />
+          <Route path="/flights" element={<FindFlightsPage />} />
 
         </Routes>
       </div>
