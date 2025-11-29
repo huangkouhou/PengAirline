@@ -6,9 +6,9 @@ import { useMessage } from "../common/MessageDisplay";
 const FindFlightsPage = () => {
   const { ErrorDisplay, SuccessDisplay, showError } = useMessage();
 
-  const [flights, setFlights] = useState();
-  const [airports, setAirports] = useState();
-  const [loading, setLoading] = useState();
+  const [flights, setFlights] = useState([]);
+  const [airports, setAirports] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -119,7 +119,7 @@ const FindFlightsPage = () => {
   };
 
   //计算飞行时长
-  const calculateDuration = () => {
+  const calculateDuration = (departureTime, arrivalTime) => {
     const dep = new Date(departureTime);
     const arr = new Date(arrivalTime);
     const diff = arr - dep;
