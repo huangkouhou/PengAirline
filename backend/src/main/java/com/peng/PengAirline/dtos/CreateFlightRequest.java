@@ -27,10 +27,10 @@ public class CreateFlightRequest {
     private String flightNumber;
 
     @NotBlank(message = "Departure airport IATA code cannot be blank")
-    private String departureAirportIataCode;
+    private String departureIataCode;
 
     @NotBlank(message = "Arrival airport IATA code cannot be blank")
-    private String arrivalAirportIataCode;
+    private String arrivalIataCode;
 
     @NotNull(message = "Departure time cannot be null")
     private LocalDateTime departureTime;

@@ -52,10 +52,10 @@ public class FlightServiceImpl implements FlightService {
         }
 
         //关联机场有效性校验
-        Airport departureAirport = airportRepo.findByIataCode(createFlightRequest.getDepartureAirportIataCode())
+        Airport departureAirport = airportRepo.findByIataCode(createFlightRequest.getDepartureIataCode())
                 .orElseThrow(() -> new NotFoundException("Departure Airport Not Found"));
 
-        Airport arrivalAirport = airportRepo.findByIataCode(createFlightRequest.getArrivalAirportIataCode())
+        Airport arrivalAirport = airportRepo.findByIataCode(createFlightRequest.getArrivalIataCode())
                 .orElseThrow(() -> new NotFoundException("Arrival Airport Not Found"));
 
         //组装并初始化实体

@@ -52,11 +52,11 @@ public class EmailNotificationServiceImpl implements EmailNotificationService{
         templateVariables.put("userName", booking.getUser().getName());
         templateVariables.put("bookingReference", booking.getBookingReference());
         templateVariables.put("flightNumber", booking.getFlight().getFlightNumber());
-        templateVariables.put("departureAirportIataCode", booking.getFlight().getDepartureAirport().getIataCode());
+        templateVariables.put("departureIataCode", booking.getFlight().getDepartureAirport().getIataCode());
         templateVariables.put("departureAirportName", booking.getFlight().getDepartureAirport().getName());
         templateVariables.put("departureAirportCity", booking.getFlight().getDepartureAirport().getCity());
         templateVariables.put("departureTime", booking.getFlight().getDepartureTime());
-        templateVariables.put("arrivalAirportIataCode", booking.getFlight().getArrivalAirport().getIataCode());
+        templateVariables.put("arrivalIataCode", booking.getFlight().getArrivalAirport().getIataCode());
         templateVariables.put("arrivalAirportName", booking.getFlight().getArrivalAirport().getName());
         templateVariables.put("arrivalAirportCity", booking.getFlight().getArrivalAirport().getCity());
         templateVariables.put("arrivalTime", booking.getFlight().getArrivalTime());

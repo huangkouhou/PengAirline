@@ -36,7 +36,7 @@ public class FlightDTO {
     private List<BookingDTO> bookings;
 
     //从 Flight 关联的 Airport 实体中提取的字段，用于简化前端交互，而非直接映射数据库。
-    private String departAirportIataCode;
-    private String arrivalAirportIataCode;
+    private String departIataCode;
+    private String arrivalIataCode;
 
 }
