@@ -10,7 +10,9 @@ const ProfilePage = () => {
     const [user, setUser] = useState(null);
     const [bookings, setBookings] = useState([]);
 
-    const [activeTab, setActiveTab] = useState(true);
+    const [activeTab, setActiveTab] = useState("profile");
+
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         fetchUserProfile();
@@ -35,10 +37,11 @@ const ProfilePage = () => {
             setBookings(response.data)
         }catch(error){
             showError(error.response?.data?.message || "Failed to fetch bookings");
+        }
     }
 
     const formatDate = (dateTime) => {
-        return new Date(datetime).toLocaleDateString([], {
+        return new Date(dateTime).toLocaleDateString([], {
             year: 'numeric',
             month: 'long',
             day: 'numeric',
@@ -62,7 +65,7 @@ const ProfilePage = () => {
                     </div>
                 </div>
 
-                <div className="profile-tap">
+                <div className="profile-taps">
                     <button
                         className={activeTab === "profile" ? "active" : ""}
                         onClick={() => setActiveTab("profile")}
@@ -124,26 +127,81 @@ const ProfilePage = () => {
 
                             </div>
                         </div>
-                        
+
                     ) : (
                         <div className="bookings-list">
+                            {bookings.length > 0 ? (
+                                bookings.map(booking => (
+                                    <div key={booking.id} className="booking-card">
+                                        <div className="booking-header">
+                                            <div className="booking-ref">
+                                                Booking #: {booking.bookingReference}
+                                            </div>
+                                            <div className={`booking-status ${booking.status.toLowerCase()}`}>
+                                                {booking.status}
+                                            </div>
+                                        </div>
 
+                                        <div className="booking-details">
+                                            <div className="flight-info">
+                                                <div className="flight-number">
+                                                    {booking.flight?.flightNumber || "Flight details not available"}
+                                                </div>
+                                                <div className="route">
+                                                    {booking.flight?.departureAirport?.iataCode} →
+                                                    {booking.flight?.arrivalAirport?.iataCode}
+                                                </div>
+                                                <div className="date">
+                                                    {booking.flight ?
+                                                        formatDate(booking.flight.departureTime) :
+                                                        "N/A"
+                                                    }
+                                                </div>
+                                            </div>
+
+                                            <div className="passengers-info">
+                                                <div className="passengers-count">
+                                                    {booking.passengers.length} Passenger
+                                                    {booking.passengers.length !== 1 ? "s" : ""}
+                                                </div>
+                                                <div className="passengers-list">
+                                                    {booking.passengers.map((p, i) => (
+                                                        <span key={i}>
+                                                            {p.firstName} {p.lastName}
+                                                            {i < booking.passengers.length - 1 ? ", " : ""}
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                            </div>
+
+                                            <div className="booking-actions">
+                                                <Link
+                                                    to={`/booking/${booking.id}`}
+                                                    className="view-details"
+                                                >
+                                                    View Details
+                                                </Link>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))
+                            ) : (
+                                <div className="no-bookings">
+                                    <p>You don't have any bookings yet</p>
+                                    <Link to="/flights" className="book-flight">
+                                        Book a Flight
+                                    </Link>
+                                </div>
+                            )}
                         </div>
+
                     )}
 
-
                 </div>
-
             </div>
-
         </div>
-    
-    
-    
-    
-    );
+    )
 
-    }
 }
 
 export default ProfilePage;
