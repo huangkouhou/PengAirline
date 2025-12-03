@@ -15,6 +15,7 @@ const ProfilePage = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+
         const fetchUserProfile = async() => {
             try{
                 const response = await ApiService.getAccountDetails();
@@ -24,7 +25,7 @@ const ProfilePage = () => {
             }finally{
                 setLoading(false)
             }
-        }
+        };
 
         const fetchUserBookings = async() => {
             try{
@@ -33,12 +34,12 @@ const ProfilePage = () => {
             }catch(error){
                 showError(error.response?.data?.message || "Failed to fetch bookings");
             }
-        }
+        };
 
         fetchUserProfile();
         fetchUserBookings();
 
-    }, []);
+    }, [showError]);
 
 
 
@@ -67,7 +68,7 @@ const ProfilePage = () => {
                     </div>
                 </div>
 
-                <div className="profile-taps">
+                <div className="profile-tabs">
                     <button
                         className={activeTab === "profile" ? "active" : ""}
                         onClick={() => setActiveTab("profile")}
