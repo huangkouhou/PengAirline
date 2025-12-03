@@ -15,30 +15,32 @@ const ProfilePage = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        const fetchUserProfile = async() => {
+            try{
+                const response = await ApiService.getAccountDetails();
+                setUser(response.data)
+            }catch(error){
+                showError(error.response?.data?.message || "Failed to fetch profile");
+            }finally{
+                setLoading(false)
+            }
+        }
+
+        const fetchUserBookings = async() => {
+            try{
+                const response = await ApiService.getCurrentUserBookings();
+                setBookings(response.data)
+            }catch(error){
+                showError(error.response?.data?.message || "Failed to fetch bookings");
+            }
+        }
+
         fetchUserProfile();
         fetchUserBookings();
 
     }, []);
 
-    const fetchUserProfile = async() => {
-        try{
-            const response = await ApiService.getAccountDetails();
-            setUser(response.data)
-        }catch(error){
-            showError(error.response?.data?.message || "Failed to fetch profile");
-        }finally{
-            setLoading(false)
-        }
-    }
 
-    const fetchUserBookings = async() => {
-        try{
-            const response = await ApiService.getCurrentUserBookings();
-            setBookings(response.data)
-        }catch(error){
-            showError(error.response?.data?.message || "Failed to fetch bookings");
-        }
-    }
 
     const formatDate = (dateTime) => {
         return new Date(dateTime).toLocaleDateString([], {
