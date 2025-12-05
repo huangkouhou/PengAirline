@@ -37,6 +37,57 @@ const UpdateProfilePage = () => {
         }
     }
 
+
+    const handleChange = (e) => {
+        const { name, value } = e.target
+
+        setUser(prev => (
+            {
+                ...prev, [name]: value
+            }
+        ))
+    }
+
+    const handleSubmit = async (e) => {
+
+        e.preventDefault();
+
+        console.log("handleSubmit called")
+
+
+        try {
+            const requestBody = {
+                name: user.name,
+                phoneNumber: user.phoneNumber || null,
+                password: user.password || undefined,
+
+            }
+
+            const isToUpdate = window.confirm("Are you sure you want to update your account?");
+
+            if (!isToUpdate) return;
+
+            const resp = await ApiService.updateMyAccount(requestBody);
+
+            if (resp.statusCode === 200) {
+                showSuccess("Account updated successfully!");
+                navigate("/profile");
+            }
+
+        } catch (error) {
+            showError(error.response?.data?.message || "Failed to update profile");
+
+        }
+    }
+
+
+    if (loading) return <div className="update-profile-loading">Loading Profile</div>
+
+    return (
+        <div></div>
+    );
+
+
 }
 
 export default UpdateProfilePage;
