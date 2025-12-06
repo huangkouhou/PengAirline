@@ -18,24 +18,28 @@ const UpdateProfilePage = () => {
     });
 
     useEffect(() => {
-        fetchUserProfile();
-    }, []);
 
-    const fetchUserProfile = async() => {
-        try {
-            const response = await ApiService.getAccountDetails();
+        const fetchUserProfile = async() => {
+            try {
+                const response = await ApiService.getAccountDetails();
 
-            setUser(prev => ({
-                ...prev,
-                name: response.data.name,
-                phoneNumber: response.data.phoneNumber || ""
-            }));
-        } catch (error) {
-            showError(error.response?.data?.message || "Failed to fetch profile");
-        } finally {
-            setLoading(false);
+                setUser(prev => ({
+                    ...prev,
+                    name: response.data.name,
+                    phoneNumber: response.data.phoneNumber || ""
+                }));
+            } catch (error) {
+                showError(error.response?.data?.message || "Failed to fetch profile");
+            } finally {
+                setLoading(false);
+            }
         }
-    }
+
+
+        fetchUserProfile();
+    }, [showError]);
+
+
 
 
     const handleChange = (e) => {
@@ -53,6 +57,12 @@ const UpdateProfilePage = () => {
         e.preventDefault();
 
         console.log("handleSubmit called")
+
+        // 如果用户输入了密码，检查两者是否一致
+        if (user.password && user.password !== user.confirmPassword) {
+            showError("Passwords do not match!");
+            return; // 阻止提交
+        }
 
 
         try {
@@ -72,6 +82,10 @@ const UpdateProfilePage = () => {
             if (resp.statusCode === 200) {
                 showSuccess("Account updated successfully!");
                 navigate("/profile");
+
+                // 更新成功后，清空密码框以确保安全
+                setUser(prev => ({...prev, password: "", confirmPassword: ""}));
+
             }
 
         } catch (error) {
