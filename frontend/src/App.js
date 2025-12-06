@@ -6,6 +6,7 @@ import LoginPage from "./components/auth/LoginPage";
 import HomePage from "./components/pages/HomePage";
 import FindFlightsPage from "./components/pages/FindFlightsPage";
 import ProfilePage from "./components/profile/ProfilePage";
+import UpdateProfilePage from "./components/profile/UpdateProfile";
 
 function App(){
 
@@ -19,6 +20,8 @@ function App(){
           <Route path="/register" element={<RegisterPage/>}/>
           <Route path="/login" element={<LoginPage/>}/>
           <Route path="/profile" element={<ProfilePage/>}/>
+          <Route path="/update-profile" element={<UpdateProfilePage/>}/>
+
 
           {/* PUBLIC PAGES */}
           <Route path="/home" element={<HomePage />} />
