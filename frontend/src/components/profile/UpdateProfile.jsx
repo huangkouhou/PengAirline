@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";//useCallback把原本每次渲染都会新建的函数 缓存下来，只有在依赖项变化时才重新生成。
 import { Link, useNavigate } from "react-router-dom";
 import ApiService from "../../services/ApiService";
 import { useMessage } from "../common/MessageDisplay";
@@ -17,27 +17,25 @@ const UpdateProfilePage = () => {
         confirmPassword: ""
     });
 
-    useEffect(() => {
+    const fetchUserProfile = useCallback(async () => {
+        try {
+            const response = await ApiService.getAccountDetails();
 
-        const fetchUserProfile = async() => {
-            try {
-                const response = await ApiService.getAccountDetails();
-
-                setUser(prev => ({
-                    ...prev,
-                    name: response.data.name,
-                    phoneNumber: response.data.phoneNumber || ""
-                }));
-            } catch (error) {
-                showError(error.response?.data?.message || "Failed to fetch profile");
-            } finally {
-                setLoading(false);
-            }
+            setUser(prev => ({
+                ...prev,
+                name: response.data.name,
+                phoneNumber: response.data.phoneNumber || ""
+            }));
+        } catch (error) {
+            showError(error.response?.data?.message || "Failed to fetch profile");
+        } finally {
+            setLoading(false);
         }
-
-
-        fetchUserProfile();
     }, [showError]);
+
+    useEffect(() => {
+        fetchUserProfile();
+    }, [fetchUserProfile]);
 
 
 

@@ -83,7 +83,7 @@ export default class ApiService {
     }
 
     static async updateMyAccount(body){
-        const resp = await axios.get(`${this.BASE_URL}/users`, body, {
+        const resp = await axios.put(`${this.BASE_URL}/users`, body, {
             headers: this.getHeader()
         });
         return resp.data;
