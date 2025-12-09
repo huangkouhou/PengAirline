@@ -15,6 +15,7 @@ const BookingPage = () => {
 
     const [availableSeats, setAvailableSeats] = useState([]);
 
+    //初始化乘客状态 (useState)
     const [passengers, setPassengers] = useState([
         {
             firstName: "",
@@ -28,6 +29,7 @@ const BookingPage = () => {
 
     useEffect(() => {
 
+        // 检查路由状态中是否已经包含了 flight 数据，数据预加载 / 状态传递” (Pre-loading / State Passing)把上一页的航班数据直接打包带了过来
         if (state?.flight) {
             console.log("Flight Found from State")
             setFlight(state.flight)
@@ -37,8 +39,9 @@ const BookingPage = () => {
             console.log("Flight Not Found from State")
             fetchFlightDetails();
         }
-    });
+    }, []);
 
+    //获取数据函数
     const fetchFlightDetails = async () => {
         try {
             setLoading(true)
@@ -55,6 +58,7 @@ const BookingPage = () => {
     }
 
 
+    //生成座位算法
     const generateAvailableSeats = (flightData) => {
         // Generate available seats (simple implementation - in real app you'd check booked seats)
         const seats = [];
