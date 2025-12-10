@@ -146,7 +146,49 @@ const BookingPage = () => {
     if (!flight) return <div className="booking-error">Flight Not Found</div>
 
     return (
-        <div></div>
+        <div className="booking-page">
+            <div className="booking-container">
+                <SuccessDisplay />
+                <ErrorDisplay />
+
+                <h2 className="booking-title">Book Flight {flight.flightNumber}</h2>
+
+                <div className="flight-summary">
+                    <div className="route">
+                        <span className="departure">
+                            {flight.departureAirport.iataCode} → {flight.arrivalAirport.iataCode}
+                        </span>
+                        <span>
+                            {new Date(flight.departureTime).toLocaleDateString([], {
+                                weekday: 'short',
+                                month: 'short',
+                                day: 'numeric',
+                                year: 'numeric'
+                            })}
+                        </span>
+                    </div>
+                    <div className="times">
+                        <div className="departure-time">
+                            {new Date(flight.departureTime).toLocaleTimeString([], {
+                                hour: '2-digit',
+                                minute: '2-digit'
+                            })}
+                        </div>
+                        <div className="arrival-time">
+                            {new Date(flight.arrivalTime).toLocaleTimeString([], {
+                                hour: '2-digit',
+                                minute: '2-digit'
+                            })}
+                        </div>
+                    </div>
+                    <div className="price">
+                        Base Price: ${flight.basePrice.toFixed(2)}
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
     );
 
 
