@@ -113,6 +113,7 @@ const BookingPage = () => {
     }
 
     const handleSubmit = async(e) => {
+        e.preventDefault();
 
         //Validate form
         for (let i = 0; i < passengers.length; i++) {
@@ -187,6 +188,112 @@ const BookingPage = () => {
                 </div>
             </div>
 
+            <form onSubmit={handleSubmit} className="booking-form">
+                <div className="passengers-section">
+                    <h3>Passenger Details</h3>
+                    {passengers.map(passenger, index) => (
+                        <div key={index} className="passenger-card">
+                            <div className="passenger-header">
+                                <h4>Passenger {index + 1}</h4>
+                                {passengers.length > 1 && (
+                                    <button
+                                        type="button"
+                                        onClick={() => removePassenger(index)}
+                                        className="remove-passenger"
+                                    >
+                                        Remove
+                                    </button>
+                                )}
+                            </div>
+
+                            <div className="passenger-form">
+                                <div className="form-group">
+                                        <label>First Name*</label>
+                                        <input
+                                            type="text"
+                                            value={passenger.firstName}
+                                            onChange={(e) => handlePassengerChange(index, 'firstName', e.target.value)}
+                                            required
+                                        />
+                                </div>
+
+                                <div className="form-group">
+                                    <label>Last Name*</label>
+                                    <input
+                                        type="text"
+                                        value={passenger.lastName}
+                                        onChange={(e) => handlePassengerChange(index, 'lastName', e.target.value)}
+                                        required
+                                    />
+                                </div>
+
+
+                                <div className="form-group">
+                                    <label>Passport Number*</label>
+                                    <input
+                                        type="text"
+                                        value={passenger.passportNumber}
+                                        onChange={(e) => handlePassengerChange(index, 'passportNumber', e.target.value)}
+                                        required
+                                    />
+                                </div>                               
+
+
+                                    <div className="form-group">
+                                        <label>Passenger Type*</label>
+                                        <select
+                                            value={passenger.type}
+                                            onChange={(e) => handlePassengerChange(index, 'type', e.target.value)}
+                                            required
+                                        >
+                                            <option value="ADULT">Adult (12+ years)</option>
+                                            <option value="CHILD">Child (2-11 years)</option>
+                                            <option value="INFANT">Infant (0-23 months)</option>
+                                        </select>
+                                    </div>
+
+                                    <div className="form-group">
+                                        <label>Seat Number*</label>
+                                        <select
+                                            value={passenger.seatNumber}
+                                            onChange={(e) => handlePassengerChange(index, 'seatNumber', e.target.value)}
+                                            required
+                                        >
+                                            <option value="">Select Seat</option>
+                                            {availableSeats.map(seat => (
+                                                <option
+                                                    key={`seat-${index}-${seat}`}
+                                                    value={seat}
+                                                    disabled={passengers.some(p => p.seatNumber === seat)}
+                                                >
+                                                    {seat}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+
+                                    <div className="form-group">
+                                        <label>Special Requests</label>
+                                        <input
+                                            type="text"
+                                            value={passenger.specialRequests}
+                                            onChange={(e) => handlePassengerChange(index, 'specialRequests', e.target.value)}
+                                            placeholder="Dietary needs, assistance required, etc."
+                                        />
+                                    </div>
+
+                            </div>
+                        </div>
+                    )}
+                        <button
+                            type="button"
+                            onClick={addPassenger}
+                            className="add-passenger"
+                        >
+                            + Add Another Passenger
+                        </button>
+                </div>
+            </form>
 
         </div>
     );
