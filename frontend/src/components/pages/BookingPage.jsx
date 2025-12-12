@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";//useCallback 用来缓存一个函数，使它在依赖不变的情况下不会重新创建
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import ApiService from "../../services/ApiService";
 import { useMessage } from "../common/MessageDisplay";
@@ -27,8 +27,23 @@ const BookingPage = () => {
         }
     ]);
 
-    useEffect(() => {
 
+    //获取数据函数
+    const fetchFlightDetails = useCallback(async () => {
+        try {
+            setLoading(true)
+            const response = await ApiService.getFlightById(flightId);
+            setFlight(response.data)
+            generateAvailableSeats(response.data)
+        } catch (error) {
+            showError(error.response?.data?.message || "Failed to fetch flight details");
+        } finally {
+            setLoading(false)
+        }
+    }, [flightId]);
+
+
+    useEffect(() => {
         // 检查路由状态中是否已经包含了 flight 数据，数据预加载 / 状态传递” (Pre-loading / State Passing)把上一页的航班数据直接打包带了过来
         if (state?.flight) {
             console.log("Flight Found from State")
@@ -39,23 +54,9 @@ const BookingPage = () => {
             console.log("Flight Not Found from State")
             fetchFlightDetails();
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    //获取数据函数
-    const fetchFlightDetails = async () => {
-        try {
-            setLoading(true)
-            const response = await ApiService.getFlightById(flightId);
-            setFlight(response.data)
-            generateAvailableSeats(response.data)
-
-        } catch (error) {
-            showError(error.response?.data?.message || "Failed to fetch flight details");
-
-        } finally {
-            setLoading(false)
-        }
-    }
 
 
     //生成座位算法
@@ -191,7 +192,7 @@ const BookingPage = () => {
             <form onSubmit={handleSubmit} className="booking-form">
                 <div className="passengers-section">
                     <h3>Passenger Details</h3>
-                    {passengers.map(passenger, index) => (
+                    {passengers.map((passenger, index) => (
                         <div key={index} className="passenger-card">
                             <div className="passenger-header">
                                 <h4>Passenger {index + 1}</h4>
@@ -276,15 +277,15 @@ const BookingPage = () => {
                                         <label>Special Requests</label>
                                         <input
                                             type="text"
-                                            value={passenger.specialRequests}
-                                            onChange={(e) => handlePassengerChange(index, 'specialRequests', e.target.value)}
+                                            value={passenger.specialRequest}
+                                            onChange={(e) => handlePassengerChange(index, 'specialRequest', e.target.value)}
                                             placeholder="Dietary needs, assistance required, etc."
                                         />
                                     </div>
 
                             </div>
                         </div>
-                    )}
+                    ))}
                         <button
                             type="button"
                             onClick={addPassenger}
@@ -293,6 +294,37 @@ const BookingPage = () => {
                             + Add Another Passenger
                         </button>
                 </div>
+
+
+                    <div className="summary-section">
+                        <h3>Booking Summary</h3>
+                        <div className="summary-details">
+                            <div className="summary-row">
+                                <span>Passengers:</span>
+                                <span>{passengers.length}</span>
+                            </div>
+                            {passengers.map((passenger, index) => (
+                                <div key={index} className="summary-row passenger-row">
+                                    <span>Passenger {index + 1} ({passenger.type}):</span>
+                                    <span>
+                                        ${passenger.type === "ADULT"
+                                            ? flight.basePrice.toFixed(2)
+                                            : passenger.type === "CHILD"
+                                                ? (flight.basePrice * 0.75).toFixed(2)
+                                                : (flight.basePrice * 0.1).toFixed(2)}
+                                    </span>
+                                </div>
+                            ))}
+                            <div className="summary-row total">
+                                <span>Total:</span>
+                                <span>${calculateTotalPrice().toFixed(2)}</span>
+                            </div>
+                        </div>
+
+                        <button type="submit" className="submit-booking">
+                            Confirm Booking
+                        </button>
+                    </div>
             </form>
 
         </div>
