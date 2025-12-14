@@ -53,7 +53,59 @@ const BookingDetailsPage = () => {
     if (!booking) return <div className="booking-details-error">Booking not found</div>;
 
     return (
-        <div></div>
+        <div className="booking-details-container">
+            <div className="booking-details-card">
+                <ErrorDisplay />
+                <SuccessDisplay />
+            </div>
+
+            <h2 className="booking-details-title">Booking Details</h2>
+
+            <div className="booking-details-summary">
+                <div className="booking-details-flight-info">
+                    <div className="booking-details-flight-number">
+                        Flight: {booking.flight?.flightNumber || "N/A"}
+                    </div>
+                    <div className="booking-details-route">
+                        <span className="booking-details-departure">
+                            {booking.flight?.departureAirport?.iataCode} → {booking.flight?.arrivalAirport?.iataCode}
+                        </span>
+                        <span className="booking-details-date">
+                            {formatDate(booking.flight?.departureTime)}
+                        </span>
+                    </div>
+                </div>
+                <div className="booking-details-price">
+                    ${calculateTotalPrice().toFixed(2)}
+                </div>
+            </div>
+
+            <div className="booking-details-info-section">
+                <div className="booking-details-info-card">
+                    <h3 className="booking-details-subtitle">Booking Information</h3>
+                    <div className="booking-details-info-row">
+                        <span className="booking-details-label">Reference Number:</span>
+                        <span className="booking-details-value">{booking.bookingReference}</span>
+                    </div>
+                    <div className="booking-details-info-row">
+                        <span className="booking-details-label">Booking Date:</span>
+                        <span className="booking-details-value">{formatDate(booking.bookingDate)}</span>
+                    </div>
+                    <div className="booking-details-info-row">
+                        <span className="booking-details-label">Status:</span>
+                        <span className={`booking-details-value booking-details-status-${booking.status.toLowerCase()}`}>
+                            {booking.status}
+                        </span>
+                    </div>
+                </div>
+
+
+
+
+            </div>
+
+
+        </div>
     );
 
 
