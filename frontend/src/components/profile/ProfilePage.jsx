@@ -30,7 +30,7 @@ const ProfilePage = () => {
         const fetchUserBookings = async() => {
             try{
                 const response = await ApiService.getCurrentUserBookings();
-                setBookings(response.data)
+                setBookings(response.data || []);
             }catch(error){
                 showError(error.response?.data?.message || "Failed to fetch bookings");
             }
@@ -134,7 +134,9 @@ const ProfilePage = () => {
                     ) : (
                         <div className="bookings-list">
                             {bookings.length > 0 ? (
-                                bookings.map(booking => (
+                                bookings.map(booking => {
+                                    const passengers = booking.passengers || [];
+                                    return (
                                     <div key={booking.id} className="booking-card">
                                         <div className="booking-header">
                                             <div className="booking-ref">
@@ -164,14 +166,14 @@ const ProfilePage = () => {
 
                                             <div className="passengers-info">
                                                 <div className="passengers-count">
-                                                    {booking.passengers.length} Passenger
-                                                    {booking.passengers.length !== 1 ? "s" : ""}
+                                                    {passengers.length} Passenger
+                                                    {passengers.length !== 1 ? "s" : ""}
                                                 </div>
                                                 <div className="passengers-list">
-                                                    {booking.passengers.map((p, i) => (
+                                                    {passengers.map((p, i) => (
                                                         <span key={i}>
                                                             {p.firstName} {p.lastName}
-                                                            {i < booking.passengers.length - 1 ? ", " : ""}
+                                                            {i < passengers.length - 1 ? ", " : ""}
                                                         </span>
                                                     ))}
                                                 </div>
@@ -187,7 +189,8 @@ const ProfilePage = () => {
                                             </div>
                                         </div>
                                     </div>
-                                ))
+                                    );
+                                })
                             ) : (
                                 <div className="no-bookings">
                                     <p>You don't have any bookings yet</p>
@@ -197,7 +200,7 @@ const ProfilePage = () => {
                                 </div>
                             )}
                         </div>
-
+                        
                     )}
 
                 </div>
