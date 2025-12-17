@@ -59,6 +59,11 @@ public class BookingServiceImpl implements BookingService{
         if (flight.getStatus() != FlightStatus.SCHEDULED){
             throw new BadRequestException("You can only book a flight that is scheduled");
         }
+        //强校验 —— 不允许 0 passenger
+        if (createBookingRequest.getPassengers() == null
+        || createBookingRequest.getPassengers().isEmpty()) {
+        throw new BadRequestException("Booking must have at least one passenger");
+        }
 
         // 4. 创建并设置 Booking (预订) 主体
         Booking booking = new Booking();

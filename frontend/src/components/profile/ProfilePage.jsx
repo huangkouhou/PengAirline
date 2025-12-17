@@ -39,7 +39,7 @@ const ProfilePage = () => {
         fetchUserProfile();
         fetchUserBookings();
 
-    }, [showError]);
+    }, []);
 
 
 
