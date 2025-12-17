@@ -8,7 +8,8 @@ import FindFlightsPage from "./components/pages/FindFlightsPage";
 import ProfilePage from "./components/profile/ProfilePage";
 import UpdateProfilePage from "./components/profile/UpdateProfile";
 import BookingPage from "./components/pages/BookingPage";
-import BookingDetailsPage from "./components/pages/BookingDetailsPage"
+import BookingDetailsPage from "./components/pages/BookingDetailsPage";
+import { RouteGuard } from "./services/RouteGuard";
 
 function App(){
 
@@ -21,14 +22,24 @@ function App(){
           {/* AUTH PAGE */}
           <Route path="/register" element={<RegisterPage/>}/>
           <Route path="/login" element={<LoginPage/>}/>
-          <Route path="/profile" element={<ProfilePage/>}/>
-          <Route path="/update-profile" element={<UpdateProfilePage/>}/>
-          <Route path="/book-flight/:id" element={<BookingPage />}/>
-          <Route path="/booking/:id" element={<BookingDetailsPage />}/>
 
           {/* PUBLIC PAGES */}
           <Route path="/home" element={<HomePage />} />
           <Route path="/flights" element={<FindFlightsPage />} />
+
+          {/* CUSTOMER PAGES */}
+          <Route path="/profile" element={<RouteGuard allowedRoles={["CUSTOMER"]} element={<ProfilePage/>}/>}/>
+          <Route path="/update-profile" element={<RouteGuard allowedRoles={["CUSTOMER"]} element={<UpdateProfilePage/>}/>}/>
+          <Route path="/book-flight/:id" element={<RouteGuard allowedRoles={["CUSTOMER", "ADMIN", "PILOT"]} element={<BookingPage />}/>}/>
+          <Route path="/booking/:id" element={<RouteGuard allowedRoles={["CUSTOMER", "ADMIN", "PILOT"]} element={<BookingDetailsPage />}/>}/>
+
+
+
+          {/* ADMIN & PILOT PAGES*/}
+
+
+          {/* Fallback for unmatched routes */}
+          <Route path="*" element={<Navigate to="home"/>}/>
 
         </Routes>
       </div>
