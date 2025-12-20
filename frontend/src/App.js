@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Navbar from "./components/common/Navbar";
 import Footer from "./components/common/Footer";
 import RegisterPage from "./components/auth/RegisterPage";
@@ -10,6 +10,7 @@ import UpdateProfilePage from "./components/profile/UpdateProfile";
 import BookingPage from "./components/pages/BookingPage";
 import BookingDetailsPage from "./components/pages/BookingDetailsPage";
 import { RouteGuard } from "./services/RouteGuard";
+import AdminDashboardPage from "./components/admin/AdminDashboardPage";
 
 function App(){
 
@@ -36,6 +37,7 @@ function App(){
 
 
           {/* ADMIN & PILOT PAGES*/}
+          <Route path="/admin" element={<RouteGuard allowedRoles={["ADMIN", "PILOT"]} element={<AdminDashboardPage />}/>} />
 
 
           {/* Fallback for unmatched routes */}

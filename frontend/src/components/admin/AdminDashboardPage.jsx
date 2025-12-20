@@ -5,17 +5,17 @@ import { useMessage } from "../common/MessageDisplay";
 
 const AdminDashboardPage = () => {
 
-    const { ErrorDisplay, SuccessDisplay, showError, showSuccess } = useEffect();
+    const { ErrorDisplay, SuccessDisplay, showError, showSuccess } = useMessage();
     const navigate = useNavigate();
-    const [activeTab, setActiveTab] = useState();
-    const [bookings, setBookings] = useState();
-    const [flights, setFlights] = useState();
-    const [airports, setAirports] = useState();
-    const [loading, setLoading] = useState();
+    const [activeTab, setActiveTab] = useState("bookings");// 默认选中 bookings 标签
+    const [bookings, setBookings] = useState([]);
+    const [flights, setFlights] = useState([]);
+    const [airports, setAirports] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         fetchAllData();
-    });
+    }, []);
 
     const fetchAllData = async() => {
         try{
@@ -128,8 +128,8 @@ const AdminDashboardPage = () => {
 
                                             <div className="admin-passengers-info">
                                                 <div className="admin-passengers-count">
-                                                    {booking.passengers.length} Passenger
-                                                    {booking.passengers.length !== 1 ? "s" : ""}
+                                                    {booking.passengers?.length || 0} Passenger
+                                                    {(booking.passengers?.length || 0) !== 1 ? "s" : ""}
                                                 </div>
                                             </div>
 
