@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -123,7 +122,9 @@ public class BookingServiceImpl implements BookingService{
     @Override
     public Response<List<BookingDTO>> getAllBookings(){
 
-        List<Booking> allBookings = bookingRepo.findAll(Sort.by(Sort.Direction.DESC, "id"));
+        //Booking -> Passenger 的关系默认:@OneToMany(fetch = FetchType.LAZY)
+        //意味着：从 DB 查询 booking 时 不会级联加载 passengers 表里的数据
+        List<Booking> allBookings = bookingRepo.findAllWithPassengers();
 
         List<BookingDTO> bookings = allBookings.stream()
                     .map(booking -> {

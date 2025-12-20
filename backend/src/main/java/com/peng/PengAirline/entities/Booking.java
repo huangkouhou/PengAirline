@@ -46,6 +46,7 @@ public class Booking {
     @Enumerated(EnumType.STRING)
     private BookingStatus status;
 
+    //@OneToMany 默认 FetchType.LAZY
     @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL)//对 Booking 的操作（保存、删除、更新）会自动级联到关联的 Passengers。
     private List<Passenger> passengers = new ArrayList<>();//每个 Booking 都有一个乘客列表（List），用来存放多个 Passenger 对象。
 
