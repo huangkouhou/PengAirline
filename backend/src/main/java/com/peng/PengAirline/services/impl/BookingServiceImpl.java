@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.peng.PengAirline.dtos.BookingDTO;
 import com.peng.PengAirline.dtos.CreateBookingRequest;
+import com.peng.PengAirline.dtos.PassengerDTO;
 import com.peng.PengAirline.dtos.Response;
 import com.peng.PengAirline.entities.User;
 import com.peng.PengAirline.enums.BookingStatus;
@@ -129,8 +130,18 @@ public class BookingServiceImpl implements BookingService{
         List<BookingDTO> bookings = allBookings.stream()
                     .map(booking -> {
                         BookingDTO bookingDTO = modelMapper.map(booking, BookingDTO.class);
+
+                        // 解决关键点：手动设置 passengers DTO
+                        bookingDTO.setPassengers(
+                            booking.getPassengers().stream()
+                                    .map(p -> modelMapper.map(p, PassengerDTO.class))
+                                    .toList()
+                        );
+
+                        // 避免无限递归
                         bookingDTO.getFlight().setBookings(null);
                         return bookingDTO;
+
                     }).toList();
     
         return Response.<List<BookingDTO>>builder()
