@@ -91,35 +91,39 @@ const AdminBookingDetailsPage = () => {
 
                 <div className="admin-booking-details">
                     <div className="admin-passengers-section">
-                        <h3>Passengers ({booking.passengers.length})</h3>
-                        {booking.passengers.map((passenger, index) => (
-                            <div key={passenger.id} className="admin-passenger-card">
-                                <div className="admin-passenger-header">
-                                    <h4>Passenger {index + 1}</h4>
-                                    <span className="admin-passenger-type">{passenger.type}</span>
-                                </div>
-                                <div className="admin-passenger-details">
-                                    <div className="admin-info-row">
-                                        <span className="admin-label">Name:</span>
-                                        <span className="admin-value">{passenger.firstName} {passenger.lastName}</span>
+                        <h3>Passengers ({booking.passengers?.length || 0})</h3>
+                            {booking.passengers?.length > 0 ? (
+                                booking.passengers.map((passenger, index) => (
+                                <div key={passenger.id} className="admin-passenger-card">
+                                    <div className="admin-passenger-header">
+                                        <h4>Passenger {index + 1}</h4>
+                                        <span className="admin-passenger-type">{passenger.type}</span>
                                     </div>
-                                    <div className="admin-info-row">
-                                        <span className="admin-label">Passport:</span>
-                                        <span className="admin-value">{passenger.passportNumber}</span>
-                                    </div>
-                                    <div className="admin-info-row">
-                                        <span className="admin-label">Seat:</span>
-                                        <span className="admin-value">{passenger.seatNumber}</span>
-                                    </div>
-                                    {passenger.specialRequests && (
+                                    <div className="admin-passenger-details">
                                         <div className="admin-info-row">
-                                            <span className="admin-label">Special Requests:</span>
-                                            <span className="admin-value">{passenger.specialRequests}</span>
+                                            <span className="admin-label">Name:</span>
+                                            <span className="admin-value">{passenger.firstName} {passenger.lastName}</span>
                                         </div>
-                                    )}
+                                        <div className="admin-info-row">
+                                            <span className="admin-label">Passport:</span>
+                                            <span className="admin-value">{passenger.passportNumber}</span>
+                                        </div>
+                                        <div className="admin-info-row">
+                                            <span className="admin-label">Seat:</span>
+                                            <span className="admin-value">{passenger.seatNumber}</span>
+                                        </div>
+                                        {passenger.specialRequests && (
+                                            <div className="admin-info-row">
+                                                <span className="admin-label">Special Requests:</span>
+                                                <span className="admin-value">{passenger.specialRequests}</span>
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
+                            ))
+                        ) : (
+                        <p>No passenger details available.</p>
+                    )}
                     </div>
 
                     <div className="admin-booking-management">

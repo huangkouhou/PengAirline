@@ -11,6 +11,7 @@ import BookingPage from "./components/pages/BookingPage";
 import BookingDetailsPage from "./components/pages/BookingDetailsPage";
 import { RouteGuard } from "./services/RouteGuard";
 import AdminDashboardPage from "./components/admin/AdminDashboardPage";
+import AdminBookingDetailsPage from "./components/admin/AdminBookingDetailsPage";
 
 function App(){
 
@@ -38,6 +39,7 @@ function App(){
 
           {/* ADMIN & PILOT PAGES*/}
           <Route path="/admin" element={<RouteGuard allowedRoles={["ADMIN", "PILOT"]} element={<AdminDashboardPage />}/>} />
+          <Route path="/admin/booking/:id" element={<RouteGuard allowedRoles={["ADMIN", "PILOT"]} element={<AdminBookingDetailsPage />}/>} />
 
 
           {/* Fallback for unmatched routes */}
