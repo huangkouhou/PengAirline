@@ -106,11 +106,25 @@ public class BookingServiceImpl implements BookingService{
     @Override
     public Response<BookingDTO> getBookingById(Long id){
 
-        Booking booking = bookingRepo.findById(id)
+        Booking booking = bookingRepo.findByIdWithPassengers(id)
                 .orElseThrow(()-> new NotFoundException("Booking not found"));
 
         BookingDTO bookingDTO = modelMapper.map(booking, BookingDTO.class);
-        bookingDTO.getFlight().setBookings(null);
+        // 手动把 Passengers 塞进去！
+        // 这一步能确保即使 ModelMapper 自动映射失败，数据也能强行转换过去
+        if (booking.getPassengers() != null) {
+            bookingDTO.setPassengers(
+                booking.getPassengers().stream()
+                        .map(p -> modelMapper.map(p, PassengerDTO.class))
+                        .toList()
+            );
+        }
+
+
+        // 防止无限递归 (如果 Entity 之间有双向关联)
+        if (bookingDTO.getFlight() != null) {
+            bookingDTO.getFlight().setBookings(null);
+        }
 
         return Response.<BookingDTO>builder()
                 .statusCode(HttpStatus.OK.value())

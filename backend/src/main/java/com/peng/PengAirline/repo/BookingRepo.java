@@ -1,9 +1,11 @@
 package com.peng.PengAirline.repo;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.peng.PengAirline.entities.Booking;
 
@@ -17,8 +19,18 @@ public interface BookingRepo extends JpaRepository<Booking, Long>{
         LEFT JOIN FETCH f.departureAirport
         LEFT JOIN FETCH f.arrivalAirport        
             """)
-    
+
     List<Booking> findAllWithPassengers();
+
+    @Query("""
+        SELECT DISTINCT b FROM Booking b
+        LEFT JOIN FETCH b.passengers
+        LEFT JOIN FETCH b.flight f 
+        LEFT JOIN FETCH f.departureAirport
+        LEFT JOIN FETCH f.arrivalAirport    
+        WHERE b.id = :id
+    """)
+    Optional<Booking> findByIdWithPassengers(@Param("id") Long id);
 
     List<Booking> findByUserIdOrderByIdDesc(Long userId);
 
