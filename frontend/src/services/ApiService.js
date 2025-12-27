@@ -211,6 +211,9 @@ export default class ApiService {
         return resp.data;
     }
 
-
+    static async getAllCountries() {
+        const resp = await axios.get(`${this.BASE_URL}/flights/countries`);
+        return resp.data;
+    }
 
 }

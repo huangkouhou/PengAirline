@@ -1,0 +1,96 @@
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import ApiService from "../../services/ApiService";
+import { useMessage } from "../common/MessageDisplay";
+
+const AddEditAirportPage = () => {
+
+    const { id } = useParams();
+    const { ErrorDisplay, SuccessDisplay, showError, showSuccess } = useMessage();
+    const navigate = useNavigate();
+    const [airport, setAirport] = useState({
+        name: "",
+        city: "",
+        country: "",
+        iataCode: ""
+    });
+    const [cities, setCities] = useState([]);
+    const [countries, setCountries] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [isEditMode, setIsEditMode] = useState(false);
+
+    useEffect(() => {
+        const fetchData = async() => {
+            try {
+                //fetch cities and countries in parallel
+                const [citiesRes, countriesRes] = await Promise.all([
+                    ApiService.getAllCities(),
+                    ApiService.getAllCountries()
+                ]);
+
+                setCities(citiesRes.data || []);
+                setCountries(countriesRes.data || []);
+
+                //如果有 id，就是编辑模式；如果是 undefined，就是新建模式
+                if (id){
+                    const airportRes = await ApiService.getAirportById(id);
+                    setAirport(airportRes.data);
+                    setIsEditMode(true);
+                }
+
+            } catch (error) {
+                showError(error.response?.data?.message || "Failed to fetch data");
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchData();
+
+    }, [id]);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;//e.target 就是那个触发事件的 <input> 标签
+        setAirport(prev => ({
+            ...prev,        //先把之前所有的属性（iataCode, city, country）都复制一份拿过来
+            [name]: value   //动态更新
+        }));
+    };
+
+    const handleSubmit = async(e) => {
+        e.preventDefault();
+        try {
+            // 走修改路线
+            if (isEditMode){
+                await ApiService.updateAirport({
+                    id: airport.id,
+                    ...airport
+                });
+                showSuccess("Airport updated successfully");
+            // 走新建路线
+            } else {
+                await ApiService.createAirport(airport);
+                showSuccess("Airport created successfully!");
+            }
+
+            navigate("/admin?tab=airports");
+
+        } catch (error) {
+            showError(error.response?.data?.message || "Failed to save airport");
+        }
+
+    };
+
+    if (loading) return <div className="airport-form-loading">Loading...</div>;
+
+    return (
+        <div></div>
+
+    );
+
+
+
+
+
+
+}
+export default AddEditAirportPage;
