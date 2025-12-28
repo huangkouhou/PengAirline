@@ -83,7 +83,92 @@ const AddEditAirportPage = () => {
     if (loading) return <div className="airport-form-loading">Loading...</div>;
 
     return (
-        <div></div>
+        <div className="airport-form-container">
+            <div className="airport-form-card">
+                <ErrorDisplay />
+                <SuccessDisplay />
+
+                <h2 className="airport-form-title">
+                    {isEditMode ? "Edit Airport" : "Add New Airport"}
+                </h2>
+
+                <form onSubmit={handleSubmit} className="airport-form">
+                    <div className="form-group">
+                        <label htmlFor="name">Airport Name</label>
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            value={airport.name}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="city">City</label>
+                        <select
+                            id="city"
+                            name="city"
+                            value={airport.city}
+                            onChange={handleChange}
+                            required
+                        >
+                            <option value="">Select city</option>
+                            {cities.map(city => (
+                                <option key={city} value={city}>
+                                    {city}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="country">Country</label>
+                        <select
+                            id="country"
+                            name="country"
+                            value={airport.country}
+                            onChange={handleChange}
+                            required
+                        >
+                            <option value="">Select country</option>
+                            {countries.map(country => (
+                                <option key={country} value={country}>
+                                    {country.replace(/_/g, ' ')}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="iataCode">IATA Code</label>
+                        <input
+                            type="text"
+                            id="iataCode"
+                            name="iataCode"
+                            value={airport.iataCode}
+                            onChange={handleChange}
+                            maxLength="3"
+                            required
+                        />
+                    </div>
+
+                    <div className="form-actions">
+                        <button type="submit" className="submit-button">
+                            {isEditMode ? "Update Airport" : "Create Airport"}
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => navigate("/admin?tab=airports")}
+                            className="cancel-button"
+                        >
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>      
 
     );
 

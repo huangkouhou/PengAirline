@@ -120,7 +120,10 @@ export default class ApiService {
     }
 
     static async getAirportById(id){
-        const resp = await axios.get(`${this.BASE_URL}/${id}`);
+        const resp = await axios.get(
+            `${this.BASE_URL}/airports/${id}`,
+            { headers: this.getHeader() }
+        );
         return resp.data;
     }
 
@@ -206,13 +209,20 @@ export default class ApiService {
         return resp.data;
     }
 
+    //add token 
     static async getAllCities(){
-        const resp = await axios.get(`${this.BASE_URL}/flights/countries`);
+        const resp = await axios.get(
+            `${this.BASE_URL}/flights/cities`,
+            { headers: this.getHeader()}
+        );
         return resp.data;
     }
 
     static async getAllCountries() {
-        const resp = await axios.get(`${this.BASE_URL}/flights/countries`);
+        const resp = await axios.get(
+            `${this.BASE_URL}/flights/countries`,
+            { headers: this.getHeader()}
+        );
         return resp.data;
     }
 
