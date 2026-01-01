@@ -15,6 +15,7 @@ import AdminBookingDetailsPage from "./components/admin/AdminBookingDetailsPage"
 import AdminFlightDetailsPage from "./components/admin/AdminFlightDetailsPage";
 import AddEditAirportPage from "./components/admin/AddEditAirportPage";
 import AddFlightPage from "./components/admin/AddFlightPage";
+import SpecialRegistration from "./components/admin/SpecialRegistration";
 
 function App(){
 
@@ -49,7 +50,7 @@ function App(){
           <Route path="/add-airport" element={<RouteGuard allowedRoles={["ADMIN"]} element={<AddEditAirportPage />}/>} />
           <Route path="/edit-airport/:id" element={<RouteGuard allowedRoles={["ADMIN"]} element={<AddEditAirportPage />}/>} />
           <Route path="/add-flight" element={<RouteGuard allowedRoles={["ADMIN", "PILOT"]} element={<AddFlightPage />}/>} />
-
+          <Route path="/special-register" element={<RouteGuard allowedRoles={["ADMIN"]} element={<SpecialRegistration />}/>} />
 
           {/* Fallback for unmatched routes */}
           <Route path="*" element={<Navigate to="home"/>}/>
