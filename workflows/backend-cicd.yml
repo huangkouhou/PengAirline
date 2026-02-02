@@ -1,0 +1,84 @@
+name: Backend CD to OCI
+
+on:
+  push:
+    branches: [ "feature/cloud-deploy" ]
+    paths:
+      # 1. 监听后端文件夹
+      - 'backend/**'
+      
+      # 2. 监听 workflow 配置文件 
+      - '.github/workflows/backend-cicd.yml'
+      
+      # 3. 排除后端文件夹里的 markdown 文档
+      - '!backend/**/*.md'
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      # 1. 设置 QEMU (为了能构建 ARM64 镜像)
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      # 2. 设置 Docker Buildx
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      # 3. 登录 Docker Hub
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # 4. 构建并推送 (注意 platform 设置)
+      - name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: ./02-backend/spring-boot-library
+          file: ./02-backend/spring-boot-library/Dockerfile # 你的 Dockerfile 位置
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/library-backend:fixed
+          # ⚠️ 关键：同时构建 AMD64 和 ARM64，或者只写 linux/arm64
+          platforms: linux/arm64
+
+  deploy:
+    needs: build-and-push 
+    runs-on: ubuntu-latest
+    steps:
+          - name: Deploy to OCI
+            uses: appleboy/ssh-action@master
+            with:
+              host: ${{ secrets.OCI_HOST }}
+              username: ${{ secrets.OCI_USERNAME }}
+              key: ${{ secrets.OCI_SSH_KEY }}
+              # 1. 声明：我要把下面 env 里的这些变量传进 SSH 脚本里
+              envs: STRIPE_KEY_SECRET, MYSQL_PASSWORD, OKTA_ISSUER, OKTA_CLIENT_ID
+              
+              script: |
+                set -e
+                cd /home/opc/library-app
+                
+                # 2. 拉取最新代码
+                git fetch --all
+                git checkout ${{ github.ref_name }}
+                git pull origin ${{ github.ref_name }}
+                
+                # 3. 【核心步骤】生成 .env 文件
+                # 这样做的目的是把 GitHub 的秘密写到服务器本地文件中，供 Docker 读取
+                echo "Generating .env file..."
+                echo "SPRING_DATASOURCE_PASSWORD=$MYSQL_PASSWORD" >> .env
+                # 如果还有其他变量，继续 echo ... >> .env
+                
+                # 4. 拉取镜像并重启
+                # Docker Compose 会自动读取同目录下的 .env 文件
+                sudo docker compose pull backend
+                sudo docker compose up -d backend
+                sudo docker image prune -f
+
+            # 5. 映射：把 GitHub Secrets 的值赋给上面的变量
+            env:
+              MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }} # 假设你在 GitHub 里存的是这个名字
