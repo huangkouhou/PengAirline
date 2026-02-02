@@ -38,10 +38,10 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v4
         with:
-          context: ./02-backend/spring-boot-library
-          file: ./02-backend/spring-boot-library/Dockerfile # 你的 Dockerfile 位置
+          context: ./backend
+          file: ./backend/Dockerfile # 你的 Dockerfile 位置
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/library-backend:fixed
+          tags: ${{ secrets.DOCKER_USERNAME }}/airline-backend:latest
           # ⚠️ 关键：同时构建 AMD64 和 ARM64，或者只写 linux/arm64
           platforms: linux/arm64
 
@@ -56,11 +56,11 @@ jobs:
               username: ${{ secrets.OCI_USERNAME }}
               key: ${{ secrets.OCI_SSH_KEY }}
               # 1. 声明：我要把下面 env 里的这些变量传进 SSH 脚本里
-              envs: STRIPE_KEY_SECRET, MYSQL_PASSWORD, OKTA_ISSUER, OKTA_CLIENT_ID
+              envs: MYSQL_PASSWORD
               
               script: |
                 set -e
-                cd /home/opc/library-app
+                cd /home/opc/pengairline
                 
                 # 2. 拉取最新代码
                 git fetch --all
@@ -81,4 +81,4 @@ jobs:
 
             # 5. 映射：把 GitHub Secrets 的值赋给上面的变量
             env:
-              MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }} # 假设你在 GitHub 里存的是这个名字
+              MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }} 
