@@ -20,16 +20,16 @@ import jakarta.annotation.PostConstruct;
 @Service//告诉 Spring：这是一个可注入的服务类，其他地方可以用 @Autowired 注入它。
 public class JwtUtils {
 
-    @Value("${jwtSecreteString}")//注入密钥
-    private String jwtSecreteString;
+    @Value("${jwtSecretString}")//注入密钥
+    private String jwtSecretString;
 
     private static final long EXPIRATION_TIME = 30L*24*60*60*1000; //30 days in millisec
     private SecretKey key;
 
-    //这一段会在 Spring 把 jwtSecreteString 注入完成后执行，用于把字符串密钥转换为 HMAC-SHA256 对称加密的 SecretKey 对象。
+    //这一段会在 Spring 把 jwtSecretString 注入完成后执行，用于把字符串密钥转换为 HMAC-SHA256 对称加密的 SecretKey 对象。
     @PostConstruct
     private void init(){
-        byte[] keyByte = jwtSecreteString.getBytes(StandardCharsets.UTF_8);
+        byte[] keyByte = jwtSecretString.getBytes(StandardCharsets.UTF_8);
         this.key = new SecretKeySpec(keyByte, "HmacSHA256");
 
     }
