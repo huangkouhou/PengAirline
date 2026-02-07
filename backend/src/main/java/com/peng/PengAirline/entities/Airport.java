@@ -1,12 +1,7 @@
 package com.peng.PengAirline.entities;
 
-import com.peng.PengAirline.enums.City;
-import com.peng.PengAirline.enums.Country;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -30,14 +25,12 @@ public class Airport {
     private String name;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private City city;
+    private String city;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Country country;
+    private String country;
 
-    @Column(unique = true, nullable = false, length = 3)
+    @Column(name = "iata_code", unique = true, nullable = false, length = 3)
     private String iataCode;
 
 }

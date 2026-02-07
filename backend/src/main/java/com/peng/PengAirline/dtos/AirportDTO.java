@@ -1,8 +1,5 @@
 package com.peng.PengAirline.dtos;
 
-import com.peng.PengAirline.enums.City;
-import com.peng.PengAirline.enums.Country;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,9 +13,9 @@ public class AirportDTO {
 
     private String name;
 
-    private City city;
+    private String city;
 
-    private Country country;
+    private String country;
 
     private String iataCode;
 

@@ -10,8 +10,6 @@ import com.peng.PengAirline.dtos.AirportCreateDTO;
 import com.peng.PengAirline.dtos.AirportDTO;
 import com.peng.PengAirline.dtos.Response;
 import com.peng.PengAirline.entities.Airport;
-import com.peng.PengAirline.enums.City;
-import com.peng.PengAirline.enums.Country;
 import com.peng.PengAirline.exceptions.BadRequestException;
 import com.peng.PengAirline.exceptions.NotFoundException;
 import com.peng.PengAirline.repo.AirportRepo;
