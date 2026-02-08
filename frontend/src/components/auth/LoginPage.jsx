@@ -84,7 +84,7 @@ const LoginPage = () => {
                             value={formData.password}
                             onChange={handleChange}
                             required
-                            placeholder="Enter your phone password ..."
+                            placeholder="Enter your password ..."
                         />
                     </div>
 

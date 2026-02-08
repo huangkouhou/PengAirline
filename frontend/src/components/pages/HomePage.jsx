@@ -43,7 +43,7 @@ const HomePage = () => {
             showError("Please select departure and arrival airports");
             return;
         }
-        navigate(`flights?departureIataCode=${searchData.departureIataCode}&arrivalIataCode=${searchData.arrivalIataCode}&departDate=${searchData.departDate}`)
+        navigate(`/flights?departureIataCode=${searchData.departureIataCode}&arrivalIataCode=${searchData.arrivalIataCode}&departureDate=${searchData.departureDate}`);
     };
 
     //交换出发机场和到达机场

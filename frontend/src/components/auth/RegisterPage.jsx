@@ -117,7 +117,7 @@ const RegisterPage = () => {
                             value={formData.password}
                             onChange={handleChange}
                             required
-                            placeholder="Enter your phone password ..."
+                            placeholder="Enter your password ..."
                         />
                     </div>
 
@@ -130,7 +130,7 @@ const RegisterPage = () => {
                             value={formData.confirmPassword}
                             onChange={handleChange}
                             required
-                            placeholder="Enter your phone number again ..."
+                            placeholder="Enter your password again ..."
                         />
                     </div>
 
