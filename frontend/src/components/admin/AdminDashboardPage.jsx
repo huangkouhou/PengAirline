@@ -12,6 +12,7 @@ const AdminDashboardPage = () => {
     const [flights, setFlights] = useState([]);
     const [airports, setAirports] = useState([]);
     const [loading, setLoading] = useState(true);
+    const userRole = localStorage.getItem("role");
 
     useEffect(() => {
         fetchAllData();
@@ -73,23 +74,26 @@ const AdminDashboardPage = () => {
                         Flights
                     </button>
                     <button
-                        className={activeTab === "airports" ? "active" : ""}
-                        onClick={() => setActiveTab("airports")}
-                    >
-                        Airports
-                    </button>
-                    <button
                         className={activeTab === "add-flight" ? "active" : ""}
                         onClick={() => navigate("/add-flight")}
                     >
                         Add New Flight
                     </button>
                     <button
-                        className={activeTab === "add-airport" ? "active" : ""}
-                        onClick={() => navigate("/add-airport")}
+                        className={activeTab === "airports" ? "active" : ""}
+                        onClick={() => setActiveTab("airports")}
                     >
-                        Add New Airport
+                        Airports
                     </button>
+
+                    {userRole === "ADMIN" && (
+                        <button
+                            className={activeTab === "add-airport" ? "active" : ""}
+                            onClick={() => navigate("/add-airport")}
+                        >
+                            Add New Airport
+                        </button>
+                    )}
                 </div>
 
 
@@ -224,13 +228,14 @@ const AdminDashboardPage = () => {
                                                 </div>
                                             </div>
                                             <div className="airport-actions">
-                                                <button
-                                                    onClick={() => navigate(`/edit-airport/${airport.id}`)}
-                                                    className="edit-button"
-                                                >
-                                                    Edit
-                                                </button>
-
+                                                {userRole === "ADMIN" && (
+                                                    <button
+                                                        onClick={() => navigate(`/edit-airport/${airport.id}`)}
+                                                        className="edit-button"
+                                                    >
+                                                        Edit
+                                                    </button>
+                                                )}
                                             </div>
                                         </div>
                                     ))}
