@@ -12,7 +12,7 @@ const AdminDashboardPage = () => {
     const [flights, setFlights] = useState([]);
     const [airports, setAirports] = useState([]);
     const [loading, setLoading] = useState(true);
-    const userRole = localStorage.getItem("role");
+    const isAdmin = ApiService.isAdmin();
 
     useEffect(() => {
         fetchAllData();
@@ -86,7 +86,7 @@ const AdminDashboardPage = () => {
                         Airports
                     </button>
 
-                    {userRole === "ADMIN" && (
+                    {isAdmin && (
                         <button
                             className={activeTab === "add-airport" ? "active" : ""}
                             onClick={() => navigate("/add-airport")}
@@ -228,7 +228,7 @@ const AdminDashboardPage = () => {
                                                 </div>
                                             </div>
                                             <div className="airport-actions">
-                                                {userRole === "ADMIN" && (
+                                                {isAdmin && (
                                                     <button
                                                         onClick={() => navigate(`/edit-airport/${airport.id}`)}
                                                         className="edit-button"
