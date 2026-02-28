@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, Link } from 'react-router-dom';
 import ApiService from "../../services/ApiService";
 import { useMessage } from "../common/MessageDisplay";
+import Select from 'react-select';
 
 const HomePage = () => {
 
@@ -60,6 +61,11 @@ const HomePage = () => {
         return `${airport.iataCode}(${airport.city})-${airport.name}`;
     };
 
+    //Convert the original airport data into the format required by react-select
+    const airportOptions = airports.map(airport => ({
+        value: airport.iataCode,
+        label: formatAirportOption(airport)
+    }));
 
     return (
         <div className="home-page">
@@ -75,22 +81,21 @@ const HomePage = () => {
                     <form onSubmit={handleSearch}>
                         <div className="search-fields">
                             <div className="form-group">
-                                <label>Form</label>
-                                <select
-                                    value={searchData.departureIataCode}
-                                    onChange={(e) => setSearchData({
+                                <label>From</label>
+                                <Select
+                                    options={airportOptions}
+                                    // react-select 的 value 需要传入完整的 { value, label } 对象，而不仅仅是字符串
+                                    value={airportOptions.find(opt => opt.value === searchData.departureIataCode) || null}
+                                    onChange={(selectedOption) => setSearchData({
                                         ...searchData,
-                                        departureIataCode: e.target.value
+                                        departureIataCode: selectedOption ? selectedOption.value : ""
                                     })}
-                                    required
-                                >
-                                    <option value="">Select Departure Airport</option>
-                                    {airports.map(airport => (
-                                        <option key={`dep-${airport.iataCode}`} value={airport.iataCode}>
-                                            {formatAirportOption(airport)}
-                                        </option>
-                                    ))}
-                                </select>
+                                    placeholder="Select Departure Airport"
+                                    isSearchable={true} // 开启搜索功能
+                                    isClearable={true}  // 允许一键清空
+                                    className="react-select-container"
+                                    classNamePrefix="react-select"
+                                />
                             </div>
 
                         
@@ -107,29 +112,20 @@ const HomePage = () => {
 
                         <div className="form-group">
                             <label>To</label>
-                            <select
-                                value={searchData.arrivalIataCode}
-                                onChange={(e) => setSearchData({
+                            <Select
+                                // 过滤掉已经选为出发地的机场
+                                options={airportOptions.filter(opt => opt.value !== searchData.departureIataCode)}
+                                value={airportOptions.find(opt => opt.value === searchData.arrivalIataCode) || null}
+                                onChange={(selectedOption) => setSearchData({
                                     ...searchData,
-                                    arrivalIataCode: e.target.value
+                                    arrivalIataCode: selectedOption ? selectedOption.value : ""
                                 })}
-                                required
-                            >
-                                <option value="">Select Arrival Airport</option>
-
-                                {airports
-                                    //防止机场数据未加载完导致报错+避免渲染 “undefined(undefined)-undefined” 这种奇怪的文本
-                                    .filter(airport => 
-                                        airport &&
-                                        airport.iataCode && 
-                                        airport.iataCode !== searchData.departureIataCode
-                                    )
-                                    .map(airport => (
-                                        <option key={`arr-${airport.iataCode}`} value={airport.iataCode}>
-                                            {formatAirportOption(airport)}
-                                        </option>
-                                    ))}
-                            </select>
+                                placeholder="Select Arrival Airport"
+                                isSearchable={true}
+                                isClearable={true}
+                                className="react-select-container"
+                                classNamePrefix="react-select"
+                            />
                         </div>
 
                         <div className="form-group">
