@@ -131,6 +131,11 @@ const FindFlightsPage = () => {
     return `${hours}h ${minutes}m`;
   };
 
+ //Convert the original airport data into the format required by react-select 
+  const airportOptions = airports.map(airport => ({
+    value: airport.iataCode,
+    label: formatAirportOption(airport)
+}));
 
 
 
