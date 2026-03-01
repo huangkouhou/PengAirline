@@ -469,6 +469,30 @@
     font-size: 1rem;
 }
 
+/* 追加下面这部分代码来修复候补选项看不清的问题 */
+.react-select__menu, 
+.react-select__option {
+    color: #333333 !important; 
+    text-align: left;
+}
+
+.react-select__option--is-focused {
+    background-color: #e3f2fd !important; 
+    color: #1a237e !important; 
+}
+
+.react-select__option--is-selected {
+    background-color: #1a237e !important; 
+    color: #ffffff !important; 
+}
+
+/* 顺便把你截图中那个暗绿色的 From、To 标签强制变白，免得看不清 */
+.hero-box .form-group label {
+    color: #ffffff !important;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;
+}
+
+
 .form-group input[type="date"] {
     height: 48px;
     width: 100%;
