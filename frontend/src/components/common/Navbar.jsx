@@ -22,7 +22,7 @@ const Navbar = () => {
         <nav className="nb">
             <div className="nb-container">
                 <div className="nb-brand">
-                    <Link>
+                    <Link to="/home" style={{ textDecoration: 'none' }}>
                         <span className="logo-airline">Peng</span>
                         <span className="logo-text">Airline</span>
                     </Link>

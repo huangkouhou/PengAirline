@@ -1,0 +1,79 @@
+name: Backend CD to OCI
+
+on:
+  push:
+    branches: [ "feature/cloud-deploy" ]
+    paths:
+      - 'backend/**'
+      - '.github/workflows/backend-cicd.yml'
+      - 'docker-compose.yml'
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: ./backend
+          file: ./backend/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/airline-backend:latest
+          platforms: linux/arm64
+
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      # 必须先检出代码
+      # 因为 deploy 是一个新的 Job，默认是空的。如果不 Checkout，
+      # 下一步的 SCP 就找不到 docker-compose.yml 文件。
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 将最新的 docker-compose.yml 传输到服务器
+      - name: Copy docker-compose to server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.OCI_HOST }}
+          username: ${{ secrets.OCI_USERNAME }}
+          key: ${{ secrets.OCI_SSH_KEY }}
+          # 你的本地文件
+          source: "docker-compose.yml"
+          # 服务器上的目标路径
+          target: "/home/opc/pengairline"
+
+      - name: Deploy to OCI
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.OCI_HOST }}
+          username: ${{ secrets.OCI_USERNAME }}
+          key: ${{ secrets.OCI_SSH_KEY }} 
+          script: |
+            # 1. 进入目录
+            cd /home/opc/pengairline
+            
+            # 2. 拉取最新镜像
+            sudo docker compose pull airline-backend
+            
+            # 3. 重启后端容器
+            # 这一步会读取刚才 SCP 传上来的新 docker-compose.yml
+            # 以及服务器上已有的 .env 文件
+            sudo docker compose up -d airline-backend
+            
+            # 4. 清理旧镜像
+            sudo docker image prune -f

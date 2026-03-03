@@ -14,7 +14,7 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOriginPatterns("http://localhost:3000")
+                        .allowedOriginPatterns("https://pengairline.penghuang.dev")
                         .allowedMethods("*")
                         .allowedHeaders("*")
                         .allowCredentials(true);

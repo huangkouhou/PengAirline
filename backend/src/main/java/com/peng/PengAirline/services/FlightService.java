@@ -6,8 +6,6 @@ import java.util.List;
 import com.peng.PengAirline.dtos.CreateFlightRequest;
 import com.peng.PengAirline.dtos.FlightDTO;
 import com.peng.PengAirline.dtos.Response;
-import com.peng.PengAirline.enums.City;
-import com.peng.PengAirline.enums.Country;
 import com.peng.PengAirline.enums.FlightStatus;
 
 public interface FlightService {
@@ -17,6 +15,6 @@ public interface FlightService {
     Response<List<FlightDTO>> getAllFlights();
     Response<?> updateFlight(CreateFlightRequest createFlightRequest);
     Response<List<FlightDTO>> searchFlight(String departureIata, String arrivalPortIata, FlightStatus status, LocalDate departureDate);
-    Response<List<City>> getAllCities();
-    Response<List<Country>> getAllCountries();
+    Response<List<String>> getAllCities();
+    Response<List<String>> getAllCountries();
 }

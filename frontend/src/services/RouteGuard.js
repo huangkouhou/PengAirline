@@ -7,7 +7,7 @@ export const RouteGuard = ({ element: Component, allowedRoles }) => {
     let hasRequiredRole = false;
 
     if (!allowedRoles || allowedRoles.length === 0){
-        hasRequiredRole == false;// Deny access if no roles are explicitly allowed
+        hasRequiredRole = false;// Deny access if no roles are explicitly allowed
     } else {
         //调远程的 ApiService.isAdmin()/isPilot()/isCustomer() 判断当前用户是什么角色
         hasRequiredRole = allowedRoles.some(role => {

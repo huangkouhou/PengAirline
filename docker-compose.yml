@@ -1,0 +1,55 @@
+version: "3.8"
+
+services:
+  # 1. 数据库服务
+  airline-db:  
+    image: mysql:8.0
+    container_name: airline-db
+    platform: linux/aarch64  # OCI ARM 架构标准写法
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: flightdb
+    volumes:
+      - airline_mysql_data:/var/lib/mysql
+      - ./db-init/flightdb:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - library-net
+
+  # 2. 后端服务
+  airline-backend: 
+    image: huangkouhou/airline-backend:latest
+    container_name: airline-backend
+    restart: always
+    expose:
+      - "8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://${DB_HOST}:3306/flightdb?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: ${DB_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+      SPRING_DATA_REST_BASE_PATH: /api
+      jwtSecretString: ${JWT_SECRET}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+      FRONTEND_URL: ${FRONTEND_URL}
+
+    depends_on:
+      - airline-db
+    networks:
+      - library-net
+
+  # 3. 前端服务
+  airline-frontend: 
+    image: huangkouhou/airline-frontend:latest
+    container_name: airline-frontend
+    restart: always
+    expose:
+      - "80"
+    networks:
+      - library-net
+
+volumes:
+    airline_mysql_data:  
+
+networks:
+    library-net:
+      name: library-app_library-net
+      external: true

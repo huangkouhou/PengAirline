@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import ApiService from "../../services/ApiService";
 import { useMessage } from "../common/MessageDisplay";
+import Select from 'react-select';
 
 const FindFlightsPage = () => {
   const { ErrorDisplay, SuccessDisplay, showError } = useMessage();
@@ -130,6 +131,11 @@ const FindFlightsPage = () => {
     return `${hours}h ${minutes}m`;
   };
 
+ //Convert the original airport data into the format required by react-select 
+  const airportOptions = airports.map(airport => ({
+    value: airport.iataCode,
+    label: formatAirportOption(airport)
+}));
 
 
 
@@ -147,21 +153,20 @@ const FindFlightsPage = () => {
                 <div className="search-row">
                     <div className="form-group">
                         <label>From</label>
-                        <select
-                            value={searchParams.departureIataCode}
-                            onChange={(e) => setSearchParams({
+                        <Select
+                            options={airportOptions}
+                            // 匹配当前 searchParams 中的值来设置选中项
+                            value={airportOptions.find(opt => opt.value === searchParams.departureIataCode) || null}
+                            onChange={(selectedOption) => setSearchParams({
                                 ...searchParams,
-                                departureIataCode: e.target.value
+                                departureIataCode: selectedOption ? selectedOption.value : ""
                             })}
-                            required
-                        >
-                            <option value="">Select Departure Airport</option>
-                            {airports.map(airport => (
-                                <option key={`dep-${airport.iataCode}`} value={airport.iataCode}>
-                                    {formatAirportOption(airport)}
-                                </option>
-                            ))}
-                        </select>
+                            placeholder="Select Departure Airport"
+                            isSearchable={true}
+                            isClearable={true}
+                            className="react-select-container"
+                            classNamePrefix="react-select"
+                        />
                     </div>
 
                     <div className="swap-cities">
@@ -176,23 +181,20 @@ const FindFlightsPage = () => {
 
                     <div className="form-group">
                         <label>To</label>
-                        <select
-                            value={searchParams.arrivalIataCode}
-                            onChange={(e) => setSearchParams({
+                        <Select
+                            // 同样过滤掉已经选为出发地的机场
+                            options={airportOptions.filter(opt => opt.value !== searchParams.departureIataCode)}
+                            value={airportOptions.find(opt => opt.value === searchParams.arrivalIataCode) || null}
+                            onChange={(selectedOption) => setSearchParams({
                                 ...searchParams,
-                                arrivalIataCode: e.target.value
+                                arrivalIataCode: selectedOption ? selectedOption.value : ""
                             })}
-                            required
-                        >
-                            <option value="">Select Arrival Airport</option>
-                            {airports
-                                .filter(airport => airport.iataCode !== searchParams.departureIataCode)
-                                .map(airport => (
-                                    <option key={`arr-${airport.iataCode}`} value={airport.iataCode}>
-                                        {formatAirportOption(airport)}
-                                    </option>
-                                ))}
-                        </select>
+                            placeholder="Select Arrival Airport"
+                            isSearchable={true}
+                            isClearable={true}
+                            className="react-select-container"
+                            classNamePrefix="react-select"
+                        />
                     </div>
 
                     <div className="form-group">

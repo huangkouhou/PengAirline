@@ -10,9 +10,6 @@ import com.peng.PengAirline.dtos.AirportCreateDTO;
 import com.peng.PengAirline.dtos.AirportDTO;
 import com.peng.PengAirline.dtos.Response;
 import com.peng.PengAirline.entities.Airport;
-import com.peng.PengAirline.enums.City;
-import com.peng.PengAirline.enums.Country;
-import com.peng.PengAirline.exceptions.BadRequestException;
 import com.peng.PengAirline.exceptions.NotFoundException;
 import com.peng.PengAirline.repo.AirportRepo;
 import com.peng.PengAirline.services.AirportService;
@@ -35,60 +32,46 @@ public class AirportServiceImpl implements AirportService{
     public Response<?> createAirport(AirportCreateDTO airportCreateDTO) {
         log.info("Inside createAirport()");
 
-        // 1. 获取 DTO 中的数据
-        Country country = airportCreateDTO.getCountry();
-        City city = airportCreateDTO.getCity();
-        
-        // 2. 核心业务逻辑：校验  城市必须属于该国家
-        if (!city.getCountry().equals(country)){
-            throw new BadRequestException("City does not belong to the country");
-        }
-        // 3. DTO 转换为 实体 (Entity)
+        // city/country 现在是 String，直接映射保存即可
         Airport airport = modelMapper.map(airportCreateDTO, Airport.class);
-        // 4. 持久化到数据库
         airportRepo.save(airport);
-
-        // 5. 返回标准化的成功响应
+        
         return Response.builder()
                 .statusCode(HttpStatus.OK.value())
                 .message("Airport Created Successfully")
                 .build();
-        
     }
 
-@Override
-public Response<?> updateAirport(Long id, AirportDTO airportDTO) {
-    // 从数据库中找出“旧的”机场实体
-    Airport existingAirport = airportRepo.findById(id)
-            .orElseThrow(() -> new NotFoundException("Airport Not Found"));
+    @Override
+    public Response<?> updateAirport(Long id, AirportDTO airportDTO) {
+        // 从数据库中找出“旧的”机场实体
+        Airport existingAirport = airportRepo.findById(id)
+                .orElseThrow(() -> new NotFoundException("Airport Not Found"));
 
-    // 逐字段“选择性更新”
-    if (airportDTO.getCity() != null) {
-        if (!airportDTO.getCity().getCountry().equals(existingAirport.getCountry())) {
-            throw new BadRequestException("City does not belong to the country");
+        //  String 字段：选择性更新
+        if (airportDTO.getCity() != null) {
+            existingAirport.setCity(airportDTO.getCity());
         }
-        existingAirport.setCity(airportDTO.getCity());
+
+        if (airportDTO.getName() != null) {
+            existingAirport.setName(airportDTO.getName());
+        }
+
+        if (airportDTO.getIataCode() != null) {
+            existingAirport.setIataCode(airportDTO.getIataCode());
+        }
+
+        if (airportDTO.getCountry() != null) {
+            existingAirport.setCountry(airportDTO.getCountry());
+        }
+
+        airportRepo.save(existingAirport);
+
+        return Response.builder()
+                .statusCode(HttpStatus.OK.value())
+                .message("Airport updated successfully")
+                .build();
     }
-
-    if (airportDTO.getName() != null) {
-        existingAirport.setName(airportDTO.getName());
-    }
-
-    if (airportDTO.getIataCode() != null) {
-        existingAirport.setIataCode(airportDTO.getIataCode());
-    }
-
-    if (airportDTO.getCountry() != null) {
-        existingAirport.setCountry(airportDTO.getCountry());
-    }
-
-    airportRepo.save(existingAirport);
-
-    return Response.builder()
-            .statusCode(HttpStatus.OK.value())
-            .message("Airport updated successfully")
-            .build();
-}
 
 
     @Override

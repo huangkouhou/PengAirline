@@ -410,10 +410,13 @@
     opacity: 0.9;
 }
 
-.search-box {
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+.hero-box {
+    background: rgba(255, 255, 255, 0.15); 
+    backdrop-filter: blur(10px); 
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
     max-width: 1000px;
     margin: 0 auto;
     padding: 2rem;
@@ -422,82 +425,138 @@
 }
 
 .search-fields {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
-    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 20px;
 }
 
 .form-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
     margin-bottom: 0;
 }
 
 .form-group label {
     display: block;
-    margin-bottom: 0.5rem;
-    font-size: 0.9rem;
-    color: #555;
-    font-weight: 500;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+    color: #ffffff; 
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5); 
 }
 
-.form-group input,
-.form-group select {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 1rem;
-}
-
-.form-group input:focus,
-.form-group select:focus {
-    outline: none;
-    border-color: #1a237e;
-}
-
-.search-button {
-    background-color: #1a237e;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 1rem 2rem;
-    font-size: 1rem;
-    font-weight: 500;
+/* React-Select 下拉框的样式覆盖 */
+.react-select__control {
+    min-height: 48px !important;
+    border-radius: 8px !important;
+    border: 1px solid #ddd !important;
+    box-shadow: none !important;
     cursor: pointer;
-    transition: background-color 0.3s;
-    width: 100%;
+}
+.react-select__control:hover {
+    border-color: #ffab00 !important; 
+}
+.react-select__value-container {
+    padding: 0 12px !important;
+}
+.react-select__single-value, 
+.react-select__placeholder {
+    color: #333 !important;
+    font-size: 1rem;
 }
 
-.search-button:hover {
-    background-color: #303f9f;
+/* 追加下面这部分代码来修复候补选项看不清的问题 */
+.react-select__menu, 
+.react-select__option {
+    color: #333333 !important; 
+    text-align: left;
+}
+
+.react-select__option--is-focused {
+    background-color: #e3f2fd !important; 
+    color: #1a237e !important; 
+}
+
+.react-select__option--is-selected {
+    background-color: #1a237e !important; 
+    color: #ffffff !important; 
+}
+
+/* 顺便把你截图中那个暗绿色的 From、To 标签强制变白，免得看不清 */
+.hero-box .form-group label {
+    color: #ffffff !important;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;
+}
+
+
+.form-group input[type="date"] {
+    height: 48px;
+    width: 100%;
+    padding: 0 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: #333;
+    font-family: inherit;
+    box-sizing: border-box;
+}
+.form-group input[type="date"]:focus {
+    outline: none;
+    border-color: #ffab00;
 }
 
 .swap-cities {
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     justify-content: center;
-    padding-bottom: 0.5rem;
-    margin-bottom: 1rem;
+    margin-top: 25px; 
 }
-
 .swap-cities button {
-    background: #1a237e;
-    color: white;
+    background: rgba(255, 255, 255, 0.9);
+    color: #1a237e;
     border: none;
     border-radius: 50%;
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     font-size: 1.2rem;
-    transition: all 0.3s;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+.swap-cities button:hover {
+    background: #ffffff;
+    transform: rotate(180deg) scale(1.1); 
+    color: #ffab00;
 }
 
-.swap-cities button:hover {
-    background: #303f9f;
-    transform: rotate(180deg);
+.search-button {
+    background-color: #ffab00; 
+    color: #1a237e; 
+    border: none;
+    border-radius: 8px;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    width: 100%;
+    margin-top: 10px;
+    box-shadow: 0 4px 15px rgba(255, 171, 0, 0.3);
+}
+.search-button:hover {
+    background-color: #ffb300;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 171, 0, 0.4);
+}
+.search-button:active {
+    transform: translateY(0);
 }
 
 .loading {

@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.peng.PengAirline.dtos.CreateFlightRequest;
 import com.peng.PengAirline.dtos.FlightDTO;
 import com.peng.PengAirline.dtos.Response;
-import com.peng.PengAirline.enums.City;
-import com.peng.PengAirline.enums.Country;
 import com.peng.PengAirline.enums.FlightStatus;
 import com.peng.PengAirline.services.FlightService;
 
@@ -71,15 +69,15 @@ public class FlightController {
         return ResponseEntity.ok(flightService.searchFlight(departureIataCode, arrivalIataCode, status, departureDate));
     }
 
-    //获取全部城市
+    // 获取全部城市（来自数据库）
     @GetMapping("/cities")
-    public ResponseEntity<Response<List<City>>> getAllCities(){
+    public ResponseEntity<Response<List<String>>> getAllCities(){
         return ResponseEntity.ok(flightService.getAllCities());
     }
 
-    //获取全部国家
+    // 获取全部国家（来自数据库）
     @GetMapping("/countries")
-    public ResponseEntity<Response<List<Country>>> getAllCountries(){
+    public ResponseEntity<Response<List<String>>> getAllCountries(){
         return ResponseEntity.ok(flightService.getAllCountries());
     }
 }

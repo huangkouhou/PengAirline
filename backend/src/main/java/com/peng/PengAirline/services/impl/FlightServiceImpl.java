@@ -16,8 +16,6 @@ import com.peng.PengAirline.entities.Airport;
 import com.peng.PengAirline.entities.Flight;
 import com.peng.PengAirline.entities.User;
 import com.peng.PengAirline.enums.FlightStatus;
-import com.peng.PengAirline.enums.City;
-import com.peng.PengAirline.enums.Country;
 import com.peng.PengAirline.exceptions.NotFoundException;
 import com.peng.PengAirline.repo.AirportRepo;
 import com.peng.PengAirline.repo.FlightRepo;
@@ -223,20 +221,24 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public Response<List<City>> getAllCities() {
-        return Response.<List<City>>builder()
+    public Response<List<String>> getAllCities() {
+        List<String> cities = airportRepo.findDistinctCities();
+
+        return Response.<List<String>>builder()
                 .statusCode(HttpStatus.OK.value())
-                .message("Success")
-                .data(List.of(City.values()))
+                .message(cities.isEmpty()? "No City Found": "Cities Retrieved Successfully")
+                .data(cities)
                 .build();
     }
 
     @Override
-    public Response<List<Country>> getAllCountries() {
-        return Response.<List<Country>>builder()
+    public Response<List<String>> getAllCountries() {
+        List<String> countries = airportRepo.findDistinctCountries();
+
+        return Response.<List<String>>builder()
                 .statusCode(HttpStatus.OK.value())
-                .message("Success")
-                .data(List.of(Country.values()))
+                .message(countries.isEmpty() ? "No Country Found" : "Countries Retrieved Successfully")
+                .data(countries)
                 .build();
     }
 
