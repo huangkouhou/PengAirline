@@ -56,7 +56,7 @@ The project is designed with real-world architecture in mind, featuring a modern
 ### Infrastructure & DevOps
 - Docker & Docker Compose
 - Nginx (Reverse Proxy)
-- MySQL / PostgreSQL (Database)
+- MySQL (Database)
 - Oracle Cloud (Computing) 
 - Certbot (HTTPS / SSL)
 
