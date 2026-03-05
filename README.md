@@ -19,7 +19,7 @@ The project is designed with real-world architecture in mind, featuring a modern
 
 ## ✨ Key Highlights
 
-- ☁️ **Cloud Deployment (AWS)** Deployed on Oracle Cloud.
+- ☁️ **Cloud Deployment** Deployed on Oracle Cloud.
 
 - 🐳 **Full Containerization** Frontend, backend, and web server are fully containerized and orchestrated via **Docker Compose**.
 
